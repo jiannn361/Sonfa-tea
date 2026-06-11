@@ -1,7 +1,7 @@
-import React, { useState, useEffect, useMemo } from 'react';
+import { useState, useEffect, useMemo } from 'react';
 import { ShoppingBag, Home, User, Plus, Minus, Trash2, Send, ArrowLeft, Search, ImageIcon, Store, Truck } from 'lucide-react';
 
-// === 1. 商品資料區 (您可以在此處直接修改) ===
+// === 1. 商品資料區 ===
 const INITIAL_DATA = {
   categories: [
     { id: 'oolong', name: '烏龍茶', nameEn: 'Oolong Tea', image: 'https://images.unsplash.com/photo-1597481499750-3e6b22637e12?auto=format&fit=crop&w=400&q=80' },
@@ -49,9 +49,8 @@ export default function TeaStoreApp() {
   
   const [selectedCat, setSelectedCat] = useState(null);
   const [selectedProduct, setSelectedProduct] = useState(null);
-  // tempOptions 改存完整的 roast 物件以便取得價格
   const [tempOptions, setTempOptions] = useState({ roastObj: null, quantity: 1 });
-  const [shippingMethod, setShippingMethod] = useState('711'); // 預設 7-11
+  const [shippingMethod, setShippingMethod] = useState('711');
 
   useEffect(() => {
     const initLiff = async () => {
@@ -68,7 +67,6 @@ export default function TeaStoreApp() {
 
   const handleProductClick = (product) => {
     setSelectedProduct(product);
-    // 預設選擇第一個烘焙程度
     setTempOptions({ roastObj: product.roastOptions[0], quantity: 1 });
   };
 
@@ -80,7 +78,7 @@ export default function TeaStoreApp() {
     const newItem = {
       ...selectedProduct,
       roast: tempOptions.roastObj.level,
-      price: tempOptions.roastObj.price, // 寫入當前選擇的單價
+      price: tempOptions.roastObj.price,
       quantity: tempOptions.quantity,
       totalPrice: tempOptions.roastObj.price * tempOptions.quantity,
       cartId: Date.now()
@@ -132,13 +130,10 @@ export default function TeaStoreApp() {
   return (
     <div className="min-h-screen bg-[#F9FCF9] text-[#3B5E46] font-sans pb-28 selection:bg-[#8EBB9F] selection:text-white">
       
-      {/* 頂部 Header - 置中對齊，加入 Logo 預留空間 */}
       <header className="bg-[#537A5F] text-white pt-16 pb-12 px-6 rounded-b-[2.5rem] relative shadow-lg overflow-hidden flex flex-col items-center justify-center text-center">
-        {/* 背景裝飾 */}
         <div className="absolute -top-10 -right-10 w-40 h-40 bg-[#6C9A7C] rounded-full opacity-50"></div>
         <div className="absolute top-10 -left-10 w-32 h-32 bg-[#43634D] rounded-full opacity-50"></div>
         
-        {/* Logo 預留區塊 - 您可以將 ImageIcon 換成 <img src="您的logo網址" /> */}
         <div className="relative z-10 w-20 h-20 bg-white/10 backdrop-blur-md rounded-full mb-4 flex items-center justify-center border border-white/20 shadow-inner">
           <ImageIcon className="text-white/70" size={32} />
         </div>
@@ -149,7 +144,6 @@ export default function TeaStoreApp() {
         </div>
       </header>
 
-      {/* 主要內容區塊 */}
       <main className="px-5 mt-6 relative z-20">
         
         {view === 'home' && (
@@ -202,7 +196,6 @@ export default function TeaStoreApp() {
 
             <div className="space-y-5">
               {appData.products.filter(p => p.catId === selectedCat.id).map(product => {
-                // 找出該茶款的最低價格顯示
                 const minPrice = Math.min(...product.roastOptions.map(r => r.price));
                 
                 return (
@@ -259,7 +252,6 @@ export default function TeaStoreApp() {
               </div>
             ) : (
               <div className="space-y-4">
-                {/* 購物車品項列表 */}
                 {cart.map(item => (
                   <div key={item.cartId} className="bg-white p-4 rounded-[2rem] shadow-sm flex items-center gap-4 border border-emerald-50">
                     <img src={item.image} className="w-16 h-16 rounded-xl object-cover" alt=""/>
@@ -278,7 +270,6 @@ export default function TeaStoreApp() {
                   </div>
                 ))}
                 
-                {/* 運送方式選擇 */}
                 <div className="mt-6 p-5 bg-white rounded-[2rem] shadow-sm border border-emerald-50">
                   <div className="mb-4">
                     <h3 className="font-bold text-[#537A5F] leading-tight">選擇運送方式</h3>
@@ -320,7 +311,6 @@ export default function TeaStoreApp() {
                   </div>
                 </div>
 
-                {/* 結帳明細區塊 */}
                 <div className="mt-8 p-6 bg-[#537A5F] text-white rounded-[2rem] shadow-xl relative overflow-hidden">
                   <div className="absolute top-0 right-0 w-40 h-40 bg-[#6C9A7C] rounded-full opacity-20 -mr-10 -mt-10"></div>
                   
@@ -387,7 +377,6 @@ export default function TeaStoreApp() {
               <button onClick={() => setSelectedProduct(null)} className="text-gray-400 bg-gray-50 hover:bg-gray-100 p-2.5 rounded-full transition-colors">✕</button>
             </div>
             
-            {/* 烘焙選擇 */}
             <div className="mb-6 bg-gray-50 p-5 rounded-[1.5rem] border border-gray-100">
               <div className="mb-3">
                 <label className="block text-sm text-[#537A5F] font-bold leading-tight">1. 選擇烘焙程度</label>
@@ -413,7 +402,6 @@ export default function TeaStoreApp() {
               </div>
             </div>
 
-            {/* 數量選擇 */}
             <div className="mb-8 bg-gray-50 p-5 rounded-[1.5rem] border border-gray-100">
               <div className="mb-3">
                 <label className="block text-sm text-[#537A5F] font-bold leading-tight">2. 購買數量 (斤)</label>
