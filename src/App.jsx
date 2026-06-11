@@ -43,7 +43,7 @@ const LIFF_ID = "";
 const SHIPPING_FEE = { '711': 60, 'home': 100 };
 
 export default function TeaStoreApp() {
-  const [appData, setAppData] = useState(INITIAL_DATA);
+  const [appData] = useState(INITIAL_DATA);
   const [view, setView] = useState('home');
   const [cart, setCart] = useState([]);
   
