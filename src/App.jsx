@@ -1,47 +1,47 @@
 import { useState, useEffect, useMemo } from 'react';
 import { ShoppingBag, Home, User, Plus, Minus, Trash2, Send, ArrowLeft, Search, ImageIcon, Store, Truck, Edit3 } from 'lucide-react';
 
-// === 1. 商品資料區 (更新為完整品項) ===
-// 為了避免破圖，先使用高品質的茶色漸層佔位圖
-const DEFAULT_IMG = 'https://images.unsplash.com/photo-1597481499750-3e6b22637e12?auto=format&fit=crop&w=400&q=80';
-const TEA_BAG_IMG = 'https://images.unsplash.com/photo-1564890369478-c89ca6d9cde9?auto=format&fit=crop&w=400&q=80';
+// 這裡的路徑全部改為對應 public 資料夾內的檔案
+// 請確保您的 public 資料夾內有對應檔名的圖片，例如 tea-placeholder.jpg
+const DEFAULT_IMG = '/tea-placeholder.jpg'; 
+const TEA_BAG_IMG = '/teabag.jpg';
 
 const INITIAL_DATA = {
   categories: [
-    { id: 'jinxuan', name: '金萱茶', nameEn: 'Jin Xuan Tea', image: DEFAULT_IMG },
-    { id: 'oolong', name: '烏龍茶', nameEn: 'Oolong Tea', image: DEFAULT_IMG },
-    { id: 'gaba', name: 'GABA茶', nameEn: 'GABA Tea', image: DEFAULT_IMG },
-    { id: 'black', name: '小葉種紅茶', nameEn: 'Black Tea', image: DEFAULT_IMG },
-    { id: 'green', name: '綠茶', nameEn: 'Green Tea', image: DEFAULT_IMG },
-    { id: 'white', name: '白茶', nameEn: 'White Tea', image: DEFAULT_IMG },
-    { id: 'jasmine', name: '茉莉花茶', nameEn: 'Jasmine Tea', image: DEFAULT_IMG },
-    { id: 'teabag', name: '茶包組', nameEn: 'Tea Bags', image: TEA_BAG_IMG },
+    { id: 'jinxuan', name: '金萱茶', nameEn: 'Jin Xuan Tea', image: '/cat-jinxuan.jpg' },
+    { id: 'oolong', name: '烏龍茶', nameEn: 'Oolong Tea', image: '/cat-oolong.jpg' },
+    { id: 'gaba', name: 'GABA茶', nameEn: 'GABA Tea', image: '/cat-gaba.jpg' },
+    { id: 'black', name: '小葉種紅茶', nameEn: 'Black Tea', image: '/cat-black.jpg' },
+    { id: 'green', name: '綠茶', nameEn: 'Green Tea', image: '/cat-green.jpg' },
+    { id: 'white', name: '白茶', nameEn: 'White Tea', image: '/cat-white.jpg' },
+    { id: 'jasmine', name: '茉莉花茶', nameEn: 'Jasmine Tea', image: '/cat-jasmine.jpg' },
+    { id: 'teabag', name: '茶包組', nameEn: 'Tea Bags', image: '/cat-teabag.jpg' },
   ],
   products: [
     // 金萱茶
-    { id: 101, catId: 'jinxuan', name: '阿里山金萱茶', nameEn: 'Alishan Jin Xuan', desc: '帶有淡雅奶香與桂花香。', image: DEFAULT_IMG, roastOptions: [{ level: '輕焙', levelEn: 'Light', price: 1200 }, { level: '中焙', levelEn: 'Medium', price: 1300 }] },
+    { id: 101, catId: 'jinxuan', name: '阿里山金萱茶', nameEn: 'Alishan Jin Xuan', desc: '帶有淡雅奶香與桂花香。', image: '/prod-jinxuan.jpg', roastOptions: [{ level: '輕焙', levelEn: 'Light', price: 1200 }, { level: '中焙', levelEn: 'Medium', price: 1300 }] },
     
     // 烏龍茶
-    { id: 201, catId: 'oolong', name: '高山烏龍', nameEn: 'High Mountain Oolong', desc: '喉韻甘甜，回甘持久。', image: DEFAULT_IMG, roastOptions: [{ level: '輕焙', levelEn: 'Light', price: 1500 }, { level: '中焙', levelEn: 'Medium', price: 1600 }] },
-    { id: 202, catId: 'oolong', name: '紅烏龍', nameEn: 'Red Oolong', desc: '熟果香氣，滋味醇厚。', image: DEFAULT_IMG, roastOptions: [{ level: '中重焙', levelEn: 'Medium-Heavy', price: 1600 }] },
-    { id: 203, catId: 'oolong', name: '紅水烏龍', nameEn: 'Red Water Oolong', desc: '傳統發酵，水色琥珀。', image: DEFAULT_IMG, roastOptions: [{ level: '重發酵', levelEn: 'Heavy Fermentation', price: 1800 }] },
-    { id: 204, catId: 'oolong', name: '白烏龍', nameEn: 'White Oolong', desc: '清香淡雅，如花香撲鼻。', image: DEFAULT_IMG, roastOptions: [{ level: '輕發酵', levelEn: 'Light Fermentation', price: 1500 }] },
+    { id: 201, catId: 'oolong', name: '高山烏龍', nameEn: 'High Mountain Oolong', desc: '喉韻甘甜，回甘持久。', image: '/prod-oolong1.jpg', roastOptions: [{ level: '輕焙', levelEn: 'Light', price: 1500 }, { level: '中焙', levelEn: 'Medium', price: 1600 }] },
+    { id: 202, catId: 'oolong', name: '紅烏龍', nameEn: 'Red Oolong', desc: '熟果香氣，滋味醇厚。', image: '/prod-oolong2.jpg', roastOptions: [{ level: '中重焙', levelEn: 'Medium-Heavy', price: 1600 }] },
+    { id: 203, catId: 'oolong', name: '紅水烏龍', nameEn: 'Red Water Oolong', desc: '傳統發酵，水色琥珀。', image: '/prod-oolong3.jpg', roastOptions: [{ level: '重發酵', levelEn: 'Heavy Fermentation', price: 1800 }] },
+    { id: 204, catId: 'oolong', name: '白烏龍', nameEn: 'White Oolong', desc: '清香淡雅，如花香撲鼻。', image: '/prod-oolong4.jpg', roastOptions: [{ level: '輕發酵', levelEn: 'Light Fermentation', price: 1500 }] },
     
     // GABA茶
-    { id: 301, catId: 'gaba', name: '佳葉龍茶 (GABA)', nameEn: 'GABA Tea', desc: '富含γ-胺基丁酸，舒緩身心。', image: DEFAULT_IMG, roastOptions: [{ level: '標準', levelEn: 'Standard', price: 2000 }] },
+    { id: 301, catId: 'gaba', name: '佳葉龍茶 (GABA)', nameEn: 'GABA Tea', desc: '富含γ-胺基丁酸，舒緩身心。', image: '/prod-gaba.jpg', roastOptions: [{ level: '標準', levelEn: 'Standard', price: 2000 }] },
     
     // 小葉種紅茶
-    { id: 401, catId: 'black', name: '金芽紅茶', nameEn: 'Golden Bud Black Tea', desc: '毫香顯露，滋味甜潤。', image: DEFAULT_IMG, roastOptions: [{ level: '全發酵', levelEn: 'Fully Fermented', price: 1800 }] },
-    { id: 402, catId: 'black', name: '蜜香紅茶', nameEn: 'Honey Black Tea', desc: '天然蜜香，小綠葉蟬叮咬。', image: DEFAULT_IMG, roastOptions: [{ level: '全發酵', levelEn: 'Fully Fermented', price: 2200 }] },
+    { id: 401, catId: 'black', name: '金芽紅茶', nameEn: 'Golden Bud Black Tea', desc: '毫香顯露，滋味甜潤。', image: '/prod-black1.jpg', roastOptions: [{ level: '全發酵', levelEn: 'Fully Fermented', price: 1800 }] },
+    { id: 402, catId: 'black', name: '蜜香紅茶', nameEn: 'Honey Black Tea', desc: '天然蜜香，小綠葉蟬叮咬。', image: '/prod-black2.jpg', roastOptions: [{ level: '全發酵', levelEn: 'Fully Fermented', price: 2200 }] },
     
     // 綠茶
-    { id: 501, catId: 'green', name: '精選綠茶', nameEn: 'Premium Green Tea', desc: '保留豐富兒茶素，清爽解膩。', image: DEFAULT_IMG, roastOptions: [{ level: '不發酵', levelEn: 'Unfermented', price: 1000 }] },
+    { id: 501, catId: 'green', name: '精選綠茶', nameEn: 'Premium Green Tea', desc: '保留豐富兒茶素，清爽解膩。', image: '/prod-green.jpg', roastOptions: [{ level: '不發酵', levelEn: 'Unfermented', price: 1000 }] },
     
     // 白茶
-    { id: 601, catId: 'white', name: '精選白茶', nameEn: 'Premium White Tea', desc: '毫香清鮮，自然萎凋。', image: DEFAULT_IMG, roastOptions: [{ level: '微發酵', levelEn: 'Slightly Fermented', price: 1600 }] },
+    { id: 601, catId: 'white', name: '精選白茶', nameEn: 'Premium White Tea', desc: '毫香清鮮，自然萎凋。', image: '/prod-white.jpg', roastOptions: [{ level: '微發酵', levelEn: 'Slightly Fermented', price: 1600 }] },
     
     // 茉莉花茶
-    { id: 701, catId: 'jasmine', name: '頂級茉莉花茶', nameEn: 'Jasmine Green Tea', desc: '新鮮茉莉花層層窨製。', image: DEFAULT_IMG, roastOptions: [{ level: '不發酵', levelEn: 'Unfermented', price: 1500 }] },
+    { id: 701, catId: 'jasmine', name: '頂級茉莉花茶', nameEn: 'Jasmine Green Tea', desc: '新鮮茉莉花層層窨製。', image: '/prod-jasmine.jpg', roastOptions: [{ level: '不發酵', levelEn: 'Unfermented', price: 1500 }] },
     
     // 茶包組
     { id: 801, catId: 'teabag', name: '原片茶包組 (50包/組)', nameEn: 'Tea Bag Set (50pcs)', desc: '方便沖泡，隨時享受好茶。', image: TEA_BAG_IMG, roastOptions: [
@@ -54,7 +54,6 @@ const INITIAL_DATA = {
   ]
 };
 
-// === 2. 系統設定 ===
 const GOOGLE_SHEET_API_URL = ""; 
 const LIFF_ID = "2010360336-i18Jsouu"; 
 const SHIPPING_FEE = { '711': 60, 'home': 100 };
@@ -68,7 +67,7 @@ export default function TeaStoreApp() {
   const [selectedProduct, setSelectedProduct] = useState(null);
   const [tempOptions, setTempOptions] = useState({ roastObj: null, quantity: 1 });
   const [shippingMethod, setShippingMethod] = useState('711');
-  const [orderNote, setOrderNote] = useState(''); // 新增：訂單備註
+  const [orderNote, setOrderNote] = useState('');
 
   useEffect(() => {
     const initLiff = async () => {
@@ -83,12 +82,11 @@ export default function TeaStoreApp() {
     initLiff();
   }, []);
 
-  // 處理點擊分類邏輯 (智慧判斷)
   const handleCategoryClick = (cat) => {
     const productsInCat = appData.products.filter(p => p.catId === cat.id);
     setSelectedCat(cat);
     
-    // 如果該分類只有一個商品，直接彈出購買選項
+    // 智慧判斷：如果該分類只有一個商品，直接彈出購買選項
     if (productsInCat.length === 1) {
       handleProductClick(productsInCat[0]);
     } else {
@@ -102,10 +100,8 @@ export default function TeaStoreApp() {
   };
 
   const addToCart = () => {
-    if (!tempOptions.roastObj) {
-      alert("請選擇選項");
-      return;
-    }
+    if (!tempOptions.roastObj) return;
+    
     const newItem = {
       ...selectedProduct,
       roast: tempOptions.roastObj.level,
@@ -118,7 +114,7 @@ export default function TeaStoreApp() {
     setView('cart');
     setTempOptions({ roastObj: null, quantity: 1 });
     setSelectedProduct(null);
-    setSelectedCat(null); // 清除選擇的分類，方便繼續購物回首頁
+    setSelectedCat(null); 
   };
 
   const removeFromCart = (cartId) => {
@@ -133,7 +129,6 @@ export default function TeaStoreApp() {
     if (cart.length === 0) return;
 
     const orderText = cart.map(item => {
-      // 根據品項判斷單位是「斤」還是「組」
       const unit = item.catId === 'teabag' ? '組' : '斤';
       return `・${item.name} (${item.roast}) x ${item.quantity}${unit} = $${item.totalPrice}`;
     }).join('\n');
@@ -162,54 +157,60 @@ export default function TeaStoreApp() {
     }
   };
 
-  // 外層容器：限制寬度並置中，模擬手機版型
   return (
-    <div className="min-h-screen bg-gray-100 flex justify-center selection:bg-[#8EBB9F] selection:text-white">
-      <div className="w-full max-w-md bg-[#F9FCF9] text-[#3B5E46] relative shadow-2xl overflow-hidden flex flex-col h-screen">
+    // 外層加入響應式背景，內層最大寬度放大到 max-w-2xl (平板) / max-w-4xl (電腦)
+    <div className="min-h-screen bg-[#EAEFEA] flex justify-center selection:bg-[#8EBB9F] selection:text-white font-sans">
+      <div className="w-full md:max-w-2xl lg:max-w-4xl bg-[#F9FCF9] text-[#3B5E46] relative shadow-[0_0_50px_-15px_rgba(0,0,0,0.1)] flex flex-col min-h-screen pb-28">
         
-        {/* 頂部 Header */}
-        <header className="shrink-0 bg-[#537A5F] text-white pt-12 pb-10 px-6 rounded-b-[2rem] relative shadow-md overflow-hidden flex flex-col items-center justify-center text-center z-20">
+        <header className="bg-[#537A5F] text-white pt-16 pb-12 px-6 md:rounded-b-[3.5rem] rounded-b-[2.5rem] relative shadow-lg overflow-hidden flex flex-col items-center justify-center text-center">
           <div className="absolute -top-10 -right-10 w-40 h-40 bg-[#6C9A7C] rounded-full opacity-50"></div>
           <div className="absolute top-10 -left-10 w-32 h-32 bg-[#43634D] rounded-full opacity-50"></div>
           
-          {/* Logo 尺寸調整為 w-16 h-16 (原本是 w-20 h-20) */}
-          <div className="relative z-10 w-16 h-16 bg-white/10 backdrop-blur-md rounded-full mb-3 flex items-center justify-center border border-white/20 shadow-inner">
-            <ImageIcon className="text-white/70" size={28} />
+          {/* Logo 如果您有準備圖片，可以換成 <img src="/logo.png" className="w-full h-full object-cover rounded-full" /> */}
+          <div className="relative z-10 w-24 h-24 bg-white/10 backdrop-blur-md rounded-full mb-4 flex items-center justify-center border border-white/20 shadow-inner overflow-hidden">
+            <ImageIcon className="text-white/70" size={32} />
           </div>
 
           <div className="relative z-10">
-            <h1 className="text-2xl font-extrabold mb-1 tracking-wider">好茶時光</h1>
-            <p className="text-[#C1E3CE] text-[10px] font-medium tracking-[0.2em] uppercase">Fine Tea Time</p>
+            <h1 className="text-3xl md:text-4xl font-extrabold mb-1 tracking-wider">好茶時光</h1>
+            <p className="text-[#C1E3CE] text-xs md:text-sm font-medium tracking-[0.2em] uppercase mt-2">Fine Tea Time</p>
           </div>
         </header>
 
-        <main className="flex-1 overflow-y-auto px-5 pt-6 pb-32 relative z-10">
+        <main className="flex-1 px-5 md:px-10 mt-8 relative z-20">
           
           {view === 'home' && (
             <div className="space-y-6">
-              {/* 精選茶款置中，並調整上方距離 */}
-              <div className="flex flex-col items-center justify-center relative px-2 mb-8">
-                <h2 className="text-2xl font-extrabold text-[#537A5F] text-center">精選茶款</h2>
-                <span className="text-xs text-[#8EBB9F] uppercase tracking-wider font-semibold text-center mt-1">Featured Teas</span>
-                <button className="absolute right-2 top-1/2 -translate-y-1/2 p-2 bg-emerald-50 rounded-full text-[#537A5F] hover:bg-emerald-100 transition-colors">
-                  <Search size={18} />
+              <div className="flex justify-between items-center px-2">
+                <div>
+                  <h2 className="text-2xl font-extrabold text-[#537A5F]">精選茶款</h2>
+                  <span className="text-xs text-[#8EBB9F] uppercase tracking-wider font-semibold">Featured Teas</span>
+                </div>
+                <button className="p-2 bg-emerald-50 rounded-full text-[#537A5F] hover:bg-emerald-100 transition-colors">
+                  <Search size={20} />
                 </button>
               </div>
               
-              <div className="grid grid-cols-2 gap-4">
+              {/* 商品列表改為 RWD：手機 2排，平板 3排，電腦 4排 */}
+              <div className="grid grid-cols-2 md:grid-cols-3 lg:grid-cols-4 gap-4 md:gap-6">
                 {appData.categories.map(cat => (
                   <div 
                     key={cat.id}
                     onClick={() => handleCategoryClick(cat)}
-                    className="bg-white rounded-3xl overflow-hidden shadow-sm hover:shadow-md transition-all cursor-pointer border border-emerald-50/50 group flex flex-col"
+                    className="bg-white rounded-[2rem] overflow-hidden shadow-sm hover:shadow-md transition-all cursor-pointer border border-emerald-50 group flex flex-col"
                   >
-                    {/* 照片尺寸修正：改為比例裁切 (aspect-[4/3])，避免過長或變形 */}
-                    <div className="aspect-[4/3] w-full overflow-hidden bg-gray-50">
-                      <img src={cat.image} alt={cat.name} className="w-full h-full object-cover group-hover:scale-105 transition-transform duration-500" loading="lazy" />
+                    <div className="aspect-[4/3] w-full overflow-hidden bg-[#E2E8E4]">
+                      {/* 當圖片載入失敗時，使用預設的佔位背景色 */}
+                      <img 
+                        src={cat.image} 
+                        alt={cat.name} 
+                        className="w-full h-full object-cover group-hover:scale-105 transition-transform duration-500" 
+                        onError={(e) => { e.target.onerror = null; e.target.src = DEFAULT_IMG; }}
+                      />
                     </div>
-                    <div className="p-3 text-center flex-1 flex flex-col justify-center">
-                      <div className="font-bold text-base text-[#537A5F]">{cat.name}</div>
-                      <div className="text-[9px] text-[#8EBB9F] mt-0.5 uppercase tracking-wider">{cat.nameEn}</div>
+                    <div className="p-4 md:p-5 text-center flex-1 flex flex-col justify-center">
+                      <div className="font-bold text-lg text-[#537A5F]">{cat.name}</div>
+                      <div className="text-[10px] text-[#8EBB9F] mt-1 uppercase tracking-widest">{cat.nameEn}</div>
                     </div>
                   </div>
                 ))}
@@ -218,24 +219,24 @@ export default function TeaStoreApp() {
           )}
 
           {view === 'detail' && selectedCat && (
-            <div className="space-y-6 animate-fade-in">
+            <div className="space-y-6 animate-fade-in md:max-w-3xl md:mx-auto">
               <button 
                 onClick={() => setView('home')} 
-                className="flex items-center gap-2 bg-white px-5 py-2.5 rounded-full shadow-sm text-sm font-bold border border-emerald-100 text-[#537A5F] hover:bg-emerald-50 transition-colors"
+                className="flex items-center gap-2 bg-white px-5 py-2.5 rounded-full shadow-sm text-sm font-bold border border-emerald-100 text-[#537A5F] hover:bg-emerald-50 transition-colors w-max"
               >
                 <ArrowLeft size={16} /> 
                 <div className="flex flex-col text-left leading-tight">
                   <span>返回分類</span>
-                  <span className="text-[9px] text-[#8EBB9F] font-normal uppercase">Back to Categories</span>
+                  <span className="text-[9px] text-[#8EBB9F] font-normal uppercase">Back</span>
                 </div>
               </button>
               
-              <div className="px-2 text-center">
-                <h2 className="text-2xl font-extrabold text-[#537A5F]">{selectedCat.name}</h2>
-                <span className="text-xs text-[#8EBB9F] uppercase tracking-wider font-semibold">{selectedCat.nameEn}</span>
+              <div className="px-2 text-center md:text-left border-b border-gray-100 pb-4">
+                <h2 className="text-3xl font-extrabold text-[#537A5F]">{selectedCat.name}</h2>
+                <span className="text-sm text-[#8EBB9F] uppercase tracking-wider font-semibold">{selectedCat.nameEn}</span>
               </div>
 
-              <div className="space-y-5">
+              <div className="space-y-5 md:grid md:grid-cols-2 md:gap-6 md:space-y-0">
                 {appData.products.filter(p => p.catId === selectedCat.id).map(product => {
                   const minPrice = Math.min(...product.roastOptions.map(r => r.price));
                   
@@ -243,22 +244,22 @@ export default function TeaStoreApp() {
                   <div 
                     key={product.id} 
                     onClick={() => handleProductClick(product)}
-                    className="relative flex items-center bg-white border border-emerald-100 rounded-3xl p-3 pr-4 shadow-sm my-6 cursor-pointer hover:shadow-md transition-all group"
+                    className="relative flex items-center bg-[#537A5F] rounded-[2rem] p-4 pr-6 shadow-xl cursor-pointer hover:bg-[#43634D] transition-colors group"
                   >
-                    <div className="w-24 h-24 bg-[#E2E8E4] rounded-2xl p-1 shrink-0 group-hover:scale-105 transition-transform duration-300">
-                      <img src={product.image} className="w-full h-full object-cover rounded-xl" alt={product.name}/>
+                    <div className="w-28 h-32 md:w-32 md:h-36 -ml-8 bg-[#E2E8E4] rounded-2xl p-1 shadow-lg shrink-0 group-hover:scale-105 transition-transform duration-300">
+                      <img src={product.image} className="w-full h-full object-cover rounded-xl" alt={product.name} onError={(e) => { e.target.onerror = null; e.target.src = DEFAULT_IMG; }}/>
                     </div>
                     
-                    <div className="ml-4 flex-1">
-                      <h3 className="font-bold text-lg text-[#537A5F] leading-tight">{product.name}</h3>
-                      <div className="text-[10px] text-[#8EBB9F] mb-1.5 font-medium uppercase tracking-wider line-clamp-1">{product.nameEn}</div>
+                    <div className="ml-4 flex-1 text-white">
+                      <h3 className="font-bold text-lg leading-tight mb-1">{product.name}</h3>
+                      <div className="text-[10px] text-[#C1E3CE] mb-2 font-light uppercase tracking-wider line-clamp-1">{product.nameEn}</div>
                       
-                      <p className="text-xs text-gray-500 mb-2 line-clamp-2">{product.desc}</p>
+                      <p className="text-xs text-[#C1E3CE] mb-3 line-clamp-2 opacity-80 leading-relaxed">{product.desc}</p>
                       
-                      <div className="font-bold tracking-wider text-[#537A5F]">
+                      <div className="font-bold tracking-wider text-emerald-200">
                         <span className="text-sm font-normal mr-1">$</span>
                         {minPrice} 
-                        <span className="text-[10px] font-normal text-gray-400 ml-1">起 / {product.catId === 'teabag' ? '組' : '斤'}</span>
+                        <span className="text-[10px] font-normal text-[#C1E3CE] ml-1">起 / {product.catId === 'teabag' ? '組' : '斤'}</span>
                       </div>
                     </div>
                   </div>
@@ -267,23 +268,24 @@ export default function TeaStoreApp() {
             </div>
           )}
 
+          {}
           {view === 'cart' && (
-            <div className="space-y-6 animate-fade-in">
+            <div className="space-y-6 animate-fade-in md:max-w-2xl md:mx-auto">
               <div className="flex items-center gap-4 px-2">
                 <button onClick={() => setView('home')} className="bg-white p-2.5 rounded-full shadow-sm text-[#537A5F] hover:bg-emerald-50">
                   <ArrowLeft size={20}/>
                 </button>
                 <div>
-                  <h2 className="text-xl font-bold text-[#537A5F] leading-tight">您的購物車</h2>
+                  <h2 className="text-2xl font-bold text-[#537A5F] leading-tight">您的購物車</h2>
                   <div className="text-[10px] text-[#8EBB9F] uppercase tracking-wider font-semibold">Shopping Cart</div>
                 </div>
               </div>
 
               {cart.length === 0 ? (
-                <div className="text-center py-16 bg-white rounded-3xl shadow-sm border border-emerald-50">
+                <div className="text-center py-20 bg-white rounded-[2rem] shadow-sm border border-emerald-50">
                   <ShoppingBag size={48} className="mx-auto mb-4 text-[#8EBB9F] opacity-50" />
-                  <p className="text-[#537A5F] font-bold">購物車還是空的唷！</p>
-                  <p className="text-xs text-[#8EBB9F] mt-1 mb-6">Your cart is currently empty.</p>
+                  <p className="text-[#537A5F] font-bold text-lg">購物車還是空的唷！</p>
+                  <p className="text-xs text-[#8EBB9F] mt-1 mb-8">Your cart is currently empty.</p>
                   <button 
                     onClick={() => setView('home')}
                     className="px-8 py-3 bg-[#537A5F] text-white rounded-full font-bold shadow-md hover:bg-[#43634D] transition-colors"
@@ -292,35 +294,35 @@ export default function TeaStoreApp() {
                   </button>
                 </div>
               ) : (
-                <div className="space-y-4">
+                <div className="space-y-5">
                   {cart.map(item => (
-                    <div key={item.cartId} className="bg-white p-4 rounded-3xl shadow-sm flex items-center gap-4 border border-emerald-50">
-                      <img src={item.image} className="w-16 h-16 rounded-2xl object-cover" alt=""/>
+                    <div key={item.cartId} className="bg-white p-4 rounded-[2rem] shadow-sm flex items-center gap-4 border border-emerald-50 hover:shadow-md transition-shadow">
+                      <img src={item.image} className="w-20 h-20 rounded-2xl object-cover" alt="" onError={(e) => { e.target.onerror = null; e.target.src = DEFAULT_IMG; }}/>
                       <div className="flex-1">
-                        <h3 className="font-bold text-[#537A5F] leading-tight">{item.name}</h3>
-                        <div className="text-[9px] text-gray-400 uppercase mb-1">{item.nameEn}</div>
+                        <h3 className="font-bold text-[#537A5F] text-lg leading-tight">{item.name}</h3>
+                        <div className="text-[9px] text-gray-400 uppercase mb-2">{item.nameEn}</div>
                         
-                        <p className="text-xs text-[#537A5F] font-medium bg-emerald-50 inline-block px-2.5 py-1 rounded-lg">
+                        <p className="text-xs text-[#8EBB9F] font-medium bg-emerald-50 inline-block px-2.5 py-1 rounded-lg">
                           {item.roast} · {item.quantity} {item.catId === 'teabag' ? '組' : '斤'}
                         </p>
-                        <div className="font-bold text-[#537A5F] mt-1">$ {item.totalPrice}</div>
+                        <div className="font-bold text-[#537A5F] mt-1.5 text-lg">$ {item.totalPrice}</div>
                       </div>
-                      <button onClick={() => removeFromCart(item.cartId)} className="text-red-400 hover:text-red-600 bg-red-50 hover:bg-red-100 p-2.5 rounded-xl transition-colors">
-                        <Trash2 size={18}/>
+                      <button onClick={() => removeFromCart(item.cartId)} className="text-red-400 hover:text-red-600 bg-red-50 hover:bg-red-100 p-3 rounded-2xl transition-colors">
+                        <Trash2 size={20}/>
                       </button>
                     </div>
                   ))}
                   
-                  <div className="mt-6 p-5 bg-white rounded-3xl shadow-sm border border-emerald-50">
-                    <div className="mb-4">
-                      <h3 className="font-bold text-[#537A5F] leading-tight">選擇運送方式</h3>
+                  <div className="mt-8 p-6 bg-white rounded-[2rem] shadow-sm border border-emerald-50">
+                    <div className="mb-5">
+                      <h3 className="font-bold text-[#537A5F] text-lg leading-tight">選擇運送方式</h3>
                       <div className="text-[10px] text-[#8EBB9F] uppercase tracking-wider">Shipping Method</div>
                     </div>
                     
-                    <div className="flex flex-col gap-3">
-                      <label className={`flex items-center justify-between p-4 border-2 rounded-2xl cursor-pointer transition-all ${shippingMethod === '711' ? 'border-[#537A5F] bg-emerald-50/30 shadow-sm' : 'border-gray-100 hover:border-gray-200'}`}>
+                    <div className="flex flex-col gap-4 md:flex-row">
+                      <label className={`flex-1 flex items-center justify-between p-4 border-2 rounded-2xl cursor-pointer transition-all ${shippingMethod === '711' ? 'border-[#537A5F] bg-emerald-50/30 shadow-sm' : 'border-gray-100 hover:border-gray-200'}`}>
                         <div className="flex items-center gap-3">
-                          <div className={`p-2 rounded-xl ${shippingMethod === '711' ? 'bg-[#537A5F] text-white' : 'bg-gray-100 text-gray-400'}`}>
+                          <div className={`p-3 rounded-xl ${shippingMethod === '711' ? 'bg-[#537A5F] text-white' : 'bg-gray-100 text-gray-400'}`}>
                             <Store size={20} />
                           </div>
                           <div>
@@ -329,14 +331,14 @@ export default function TeaStoreApp() {
                           </div>
                         </div>
                         <div className="flex items-center gap-3">
-                          <span className="font-bold text-[#537A5F] text-sm">+$ {SHIPPING_FEE['711']}</span>
+                          <span className="font-bold text-[#8EBB9F] text-sm">+$ {SHIPPING_FEE['711']}</span>
                           <input type="radio" name="shipping" value="711" checked={shippingMethod === '711'} onChange={() => setShippingMethod('711')} className="w-5 h-5 accent-[#537A5F]"/>
                         </div>
                       </label>
 
-                      <label className={`flex items-center justify-between p-4 border-2 rounded-2xl cursor-pointer transition-all ${shippingMethod === 'home' ? 'border-[#537A5F] bg-emerald-50/30 shadow-sm' : 'border-gray-100 hover:border-gray-200'}`}>
+                      <label className={`flex-1 flex items-center justify-between p-4 border-2 rounded-2xl cursor-pointer transition-all ${shippingMethod === 'home' ? 'border-[#537A5F] bg-emerald-50/30 shadow-sm' : 'border-gray-100 hover:border-gray-200'}`}>
                         <div className="flex items-center gap-3">
-                          <div className={`p-2 rounded-xl ${shippingMethod === 'home' ? 'bg-[#537A5F] text-white' : 'bg-gray-100 text-gray-400'}`}>
+                          <div className={`p-3 rounded-xl ${shippingMethod === 'home' ? 'bg-[#537A5F] text-white' : 'bg-gray-100 text-gray-400'}`}>
                             <Truck size={20} />
                           </div>
                           <div>
@@ -345,19 +347,18 @@ export default function TeaStoreApp() {
                           </div>
                         </div>
                         <div className="flex items-center gap-3">
-                          <span className="font-bold text-[#537A5F] text-sm">+$ {SHIPPING_FEE['home']}</span>
+                          <span className="font-bold text-[#8EBB9F] text-sm">+$ {SHIPPING_FEE['home']}</span>
                           <input type="radio" name="shipping" value="home" checked={shippingMethod === 'home'} onChange={() => setShippingMethod('home')} className="w-5 h-5 accent-[#537A5F]"/>
                         </div>
                       </label>
                     </div>
                   </div>
 
-                  {/* 新增：訂單備註欄位 */}
-                  <div className="mt-4 p-5 bg-white rounded-3xl shadow-sm border border-emerald-50">
-                    <div className="mb-3 flex items-center gap-2">
-                      <Edit3 size={18} className="text-[#537A5F]" />
+                  <div className="mt-4 p-6 bg-white rounded-[2rem] shadow-sm border border-emerald-50">
+                    <div className="mb-4 flex items-center gap-2">
+                      <Edit3 size={20} className="text-[#537A5F]" />
                       <div>
-                        <h3 className="font-bold text-[#537A5F] leading-tight">訂單備註 (選填)</h3>
+                        <h3 className="font-bold text-[#537A5F] text-lg leading-tight">訂單備註 (選填)</h3>
                         <div className="text-[10px] text-[#8EBB9F] uppercase tracking-wider">Order Notes</div>
                       </div>
                     </div>
@@ -365,49 +366,49 @@ export default function TeaStoreApp() {
                       value={orderNote}
                       onChange={(e) => setOrderNote(e.target.value)}
                       placeholder="有什麼想告訴我們的嗎？(例如：希望的出貨時間等)"
-                      className="w-full bg-gray-50 border border-gray-200 rounded-2xl p-4 text-sm text-[#537A5F] placeholder-gray-400 focus:outline-none focus:ring-2 focus:ring-[#8EBB9F] focus:bg-white transition-all resize-none h-24"
+                      className="w-full bg-gray-50 border border-gray-200 rounded-2xl p-4 text-sm text-[#537A5F] placeholder-gray-400 focus:outline-none focus:ring-2 focus:ring-[#8EBB9F] focus:bg-white transition-all resize-none h-28"
                     />
                   </div>
 
-                  <div className="mt-8 p-6 bg-[#537A5F] text-white rounded-[2rem] shadow-xl relative overflow-hidden">
-                    <div className="absolute top-0 right-0 w-40 h-40 bg-[#6C9A7C] rounded-full opacity-20 -mr-10 -mt-10"></div>
+                  <div className="mt-8 p-8 bg-[#537A5F] text-white rounded-[2rem] shadow-xl relative overflow-hidden">
+                    <div className="absolute top-0 right-0 w-48 h-48 bg-[#6C9A7C] rounded-full opacity-20 -mr-12 -mt-12"></div>
                     
-                    <div className="space-y-3 mb-6 relative z-10 text-sm">
+                    <div className="space-y-4 mb-6 relative z-10 text-sm">
                       <div className="flex justify-between items-center text-[#C1E3CE]">
                         <div>
                           <span>商品總計</span> <span className="text-[10px] ml-1 uppercase opacity-70">Subtotal</span>
                         </div>
-                        <span className="font-medium">$ {itemsTotal}</span>
+                        <span className="font-medium text-lg">$ {itemsTotal}</span>
                       </div>
                       <div className="flex justify-between items-center text-[#C1E3CE]">
                         <div>
                           <span>運費</span> <span className="text-[10px] ml-1 uppercase opacity-70">Shipping Fee</span>
                         </div>
-                        <span className="font-medium">$ {currentShippingFee}</span>
+                        <span className="font-medium text-lg">$ {currentShippingFee}</span>
                       </div>
                     </div>
                     
-                    <div className="flex justify-between items-end mb-6 relative z-10 pt-4 border-t border-[#6C9A7C]/50">
+                    <div className="flex justify-between items-end mb-8 relative z-10 pt-5 border-t border-[#6C9A7C]/50">
                       <div>
-                        <div className="font-medium">總結帳金額</div>
+                        <div className="font-medium text-lg">總結帳金額</div>
                         <div className="text-[10px] text-[#C1E3CE] uppercase mt-0.5">Total Amount</div>
                       </div>
-                      <span className="font-bold text-3xl text-emerald-200">$ {cartTotal}</span>
+                      <span className="font-bold text-4xl text-emerald-200">$ {cartTotal}</span>
                     </div>
                     
                     <button 
                       onClick={submitOrder}
-                      className="w-full bg-white text-[#537A5F] py-4 rounded-2xl font-bold flex flex-col items-center justify-center shadow-lg hover:bg-gray-100 transition relative z-10"
+                      className="w-full bg-white text-[#537A5F] py-4 rounded-2xl font-bold flex flex-col items-center justify-center shadow-lg hover:bg-gray-100 transition relative z-10 text-lg"
                     >
                       <div className="flex items-center gap-2">
-                        <Send size={18}/> <span>傳送訂單至 LINE</span>
+                        <Send size={20}/> <span>傳送訂單至 LINE</span>
                       </div>
                       <span className="text-[10px] font-normal text-gray-500 uppercase mt-0.5">Send Order via LINE</span>
                     </button>
 
                     <button 
                       onClick={() => setView('home')}
-                      className="w-full bg-transparent border border-[#8EBB9F] text-white mt-3 py-3.5 rounded-2xl font-bold flex flex-col items-center justify-center hover:bg-[#6C9A7C]/50 transition relative z-10"
+                      className="w-full bg-transparent border border-[#8EBB9F] text-white mt-4 py-3.5 rounded-2xl font-bold flex flex-col items-center justify-center hover:bg-[#6C9A7C]/50 transition relative z-10"
                     >
                       <span>繼續購物</span>
                       <span className="text-[9px] font-normal text-[#C1E3CE] uppercase mt-0.5">Continue Shopping</span>
@@ -420,15 +421,14 @@ export default function TeaStoreApp() {
         </main>
 
         {selectedProduct && tempOptions.roastObj && (
-          <div className="fixed inset-0 bg-black/60 z-50 flex items-end justify-center backdrop-blur-sm transition-opacity">
-            <div className="bg-white w-full max-w-md rounded-t-[2.5rem] p-6 pb-12 shadow-2xl relative animate-slide-up">
-              <div className="w-12 h-1.5 bg-gray-200 rounded-full mx-auto mb-6"></div>
+          <div className="fixed inset-0 bg-black/60 z-50 flex items-center md:items-center justify-center backdrop-blur-sm p-4">
+            <div className="bg-white w-full max-w-md rounded-[2.5rem] p-6 pb-8 shadow-2xl relative animate-slide-up">
               
               <div className="flex justify-between items-start mb-6">
                 <div>
                   <h3 className="text-2xl font-extrabold text-[#537A5F] leading-tight">{selectedProduct.name}</h3>
-                  <p className="text-[11px] text-gray-400 uppercase tracking-widest mt-1 mb-2">{selectedProduct.nameEn}</p>
-                  <div className="inline-block bg-emerald-50 text-[#537A5F] font-bold px-3 py-1 rounded-lg text-sm border border-emerald-100">
+                  <p className="text-[11px] text-gray-400 uppercase tracking-widest mt-1 mb-3">{selectedProduct.nameEn}</p>
+                  <div className="inline-block bg-emerald-50 text-[#537A5F] font-bold px-3 py-1.5 rounded-lg text-sm border border-emerald-100">
                     單價 $ {tempOptions.roastObj.price} / {selectedProduct.catId === 'teabag' ? '組' : '斤'}
                   </div>
                 </div>
@@ -484,45 +484,46 @@ export default function TeaStoreApp() {
 
               <button 
                 onClick={addToCart}
-                className="w-full bg-[#537A5F] text-white py-4 px-6 rounded-2xl font-bold shadow-xl hover:bg-[#43634D] transition-colors flex justify-between items-center group"
+                className={`w-full py-4 px-6 rounded-2xl font-bold shadow-xl transition-colors flex justify-between items-center group ${tempOptions.roastObj ? 'bg-[#537A5F] text-white hover:bg-[#43634D]' : 'bg-gray-300 text-gray-500 cursor-not-allowed'}`}
+                disabled={!tempOptions.roastObj}
               >
                 <div className="flex flex-col text-left">
                   <span className="text-lg">加入購物車</span>
-                  <span className="text-[10px] text-[#C1E3CE] uppercase font-normal">Add to Cart</span>
+                  <span className="text-[10px] text-white/70 uppercase font-normal">Add to Cart</span>
                 </div>
                 <div className="bg-white/20 px-4 py-2 rounded-xl group-hover:bg-white/30 transition-colors">
-                  $ {tempOptions.roastObj.price * tempOptions.quantity}
+                  $ {tempOptions.roastObj ? tempOptions.roastObj.price * tempOptions.quantity : 0}
                 </div>
               </button>
             </div>
           </div>
         )}
 
-        <nav className="absolute bottom-6 left-1/2 -translate-x-1/2 w-[85%] bg-[#537A5F] text-white py-3 px-8 rounded-full flex justify-between items-center shadow-[0_10px_30px_-5px_rgba(83,122,95,0.7)] z-30 border border-white/10">
+        <nav className="fixed bottom-6 left-1/2 -translate-x-1/2 w-[90%] md:w-full md:max-w-md bg-[#537A5F] text-white py-3 px-8 rounded-full flex justify-between items-center shadow-[0_10px_40px_-10px_rgba(83,122,95,0.6)] z-40 border border-white/10">
           <button 
             onClick={() => setView('home')} 
             className={`p-2 transition-colors flex flex-col items-center gap-1 ${view === 'home' || view === 'detail' ? 'text-white' : 'text-[#8EBB9F]'}`}
           >
-            <Home size={22} />
-            <span className="text-[8px] uppercase tracking-wider">Home</span>
+            <Home size={24} />
+            <span className="text-[9px] uppercase tracking-wider">Home</span>
           </button>
           <button 
             onClick={() => setView('cart')} 
             className={`p-2 relative transition-colors flex flex-col items-center gap-1 ${view === 'cart' ? 'text-emerald-200' : 'text-[#8EBB9F]'}`}
           >
             <div className="relative">
-              <ShoppingBag size={22} />
+              <ShoppingBag size={24} />
               {cart.length > 0 && (
-                <span className="absolute -top-1 -right-2 bg-red-500 text-white text-[9px] w-4 h-4 rounded-full flex items-center justify-center font-bold shadow-sm ring-2 ring-[#537A5F]">
+                <span className="absolute -top-1 -right-2 bg-red-500 text-white text-[10px] w-5 h-5 rounded-full flex items-center justify-center font-bold shadow-sm ring-2 ring-[#537A5F]">
                   {cart.length}
                 </span>
               )}
             </div>
-            <span className="text-[8px] uppercase tracking-wider">Cart</span>
+            <span className="text-[9px] uppercase tracking-wider">Cart</span>
           </button>
           <button className="p-2 text-[#8EBB9F] hover:text-white transition-colors flex flex-col items-center gap-1">
-            <User size={22} />
-            <span className="text-[8px] uppercase tracking-wider">Profile</span>
+            <User size={24} />
+            <span className="text-[9px] uppercase tracking-wider">Profile</span>
           </button>
         </nav>
 
