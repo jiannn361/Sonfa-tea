@@ -172,6 +172,7 @@ export default function TeaStoreApp() {
           <div className="absolute -top-10 -right-10 w-40 h-40 bg-[#6C9A7C] rounded-full opacity-50"></div>
           <div className="absolute top-10 -left-10 w-32 h-32 bg-[#43634D] rounded-full opacity-50"></div>
           
+          {/* Logo 尺寸調整為 w-16 h-16 (原本是 w-20 h-20) */}
           <div className="relative z-10 w-16 h-16 bg-white/10 backdrop-blur-md rounded-full mb-3 flex items-center justify-center border border-white/20 shadow-inner">
             <ImageIcon className="text-white/70" size={28} />
           </div>
@@ -182,17 +183,15 @@ export default function TeaStoreApp() {
           </div>
         </header>
 
-        {/* 主要內容區塊 (可滾動) */}
         <main className="flex-1 overflow-y-auto px-5 pt-6 pb-32 relative z-10">
           
           {view === 'home' && (
             <div className="space-y-6">
-              <div className="flex justify-between items-center px-2">
-                <div>
-                  <h2 className="text-2xl font-extrabold text-[#537A5F]">精選茶款</h2>
-                  <span className="text-xs text-[#8EBB9F] uppercase tracking-wider font-semibold">Featured Teas</span>
-                </div>
-                <button className="p-2 bg-emerald-50 rounded-full text-[#537A5F] hover:bg-emerald-100 transition-colors">
+              {/* 精選茶款置中，並調整上方距離 */}
+              <div className="flex flex-col items-center justify-center relative px-2 mb-8">
+                <h2 className="text-2xl font-extrabold text-[#537A5F] text-center">精選茶款</h2>
+                <span className="text-xs text-[#8EBB9F] uppercase tracking-wider font-semibold text-center mt-1">Featured Teas</span>
+                <button className="absolute right-2 top-1/2 -translate-y-1/2 p-2 bg-emerald-50 rounded-full text-[#537A5F] hover:bg-emerald-100 transition-colors">
                   <Search size={18} />
                 </button>
               </div>
@@ -204,6 +203,7 @@ export default function TeaStoreApp() {
                     onClick={() => handleCategoryClick(cat)}
                     className="bg-white rounded-3xl overflow-hidden shadow-sm hover:shadow-md transition-all cursor-pointer border border-emerald-50/50 group flex flex-col"
                   >
+                    {/* 照片尺寸修正：改為比例裁切 (aspect-[4/3])，避免過長或變形 */}
                     <div className="aspect-[4/3] w-full overflow-hidden bg-gray-50">
                       <img src={cat.image} alt={cat.name} className="w-full h-full object-cover group-hover:scale-105 transition-transform duration-500" loading="lazy" />
                     </div>
@@ -221,7 +221,7 @@ export default function TeaStoreApp() {
             <div className="space-y-6 animate-fade-in">
               <button 
                 onClick={() => setView('home')} 
-                className="flex items-center gap-2 bg-white px-5 py-2.5 rounded-full shadow-sm text-sm font-bold border border-emerald-100/50 text-[#537A5F] hover:bg-emerald-50 transition-colors"
+                className="flex items-center gap-2 bg-white px-5 py-2.5 rounded-full shadow-sm text-sm font-bold border border-emerald-100 text-[#537A5F] hover:bg-emerald-50 transition-colors"
               >
                 <ArrowLeft size={16} /> 
                 <div className="flex flex-col text-left leading-tight">
@@ -230,36 +230,35 @@ export default function TeaStoreApp() {
                 </div>
               </button>
               
-              <div className="px-2">
+              <div className="px-2 text-center">
                 <h2 className="text-2xl font-extrabold text-[#537A5F]">{selectedCat.name}</h2>
                 <span className="text-xs text-[#8EBB9F] uppercase tracking-wider font-semibold">{selectedCat.nameEn}</span>
               </div>
 
-              <div className="space-y-4">
+              <div className="space-y-5">
                 {appData.products.filter(p => p.catId === selectedCat.id).map(product => {
                   const minPrice = Math.min(...product.roastOptions.map(r => r.price));
-                  const unit = product.catId === 'teabag' ? '組' : '斤';
                   
                   return (
                   <div 
                     key={product.id} 
                     onClick={() => handleProductClick(product)}
-                    className="relative flex items-center bg-[#537A5F] rounded-3xl p-3 pr-5 shadow-lg cursor-pointer hover:bg-[#43634D] transition-colors group"
+                    className="relative flex items-center bg-white border border-emerald-100 rounded-3xl p-3 pr-4 shadow-sm my-6 cursor-pointer hover:shadow-md transition-all group"
                   >
-                    <div className="w-24 h-24 bg-white rounded-2xl p-1 shadow-md shrink-0">
-                      <img src={product.image} className="w-full h-full object-cover rounded-xl" alt={product.name} loading="lazy"/>
+                    <div className="w-24 h-24 bg-[#E2E8E4] rounded-2xl p-1 shrink-0 group-hover:scale-105 transition-transform duration-300">
+                      <img src={product.image} className="w-full h-full object-cover rounded-xl" alt={product.name}/>
                     </div>
                     
-                    <div className="ml-4 flex-1 text-white py-2">
-                      <h3 className="font-bold text-lg leading-tight mb-0.5">{product.name}</h3>
-                      <div className="text-[9px] text-[#C1E3CE] mb-1.5 uppercase tracking-wider line-clamp-1">{product.nameEn}</div>
+                    <div className="ml-4 flex-1">
+                      <h3 className="font-bold text-lg text-[#537A5F] leading-tight">{product.name}</h3>
+                      <div className="text-[10px] text-[#8EBB9F] mb-1.5 font-medium uppercase tracking-wider line-clamp-1">{product.nameEn}</div>
                       
-                      <p className="text-[11px] text-[#C1E3CE] mb-2 line-clamp-2 opacity-90 leading-snug">{product.desc}</p>
+                      <p className="text-xs text-gray-500 mb-2 line-clamp-2">{product.desc}</p>
                       
-                      <div className="font-bold tracking-wider text-emerald-200 flex items-baseline">
+                      <div className="font-bold tracking-wider text-[#537A5F]">
                         <span className="text-sm font-normal mr-1">$</span>
                         {minPrice} 
-                        <span className="text-[10px] font-normal text-[#C1E3CE] ml-1">起 / {unit}</span>
+                        <span className="text-[10px] font-normal text-gray-400 ml-1">起 / {product.catId === 'teabag' ? '組' : '斤'}</span>
                       </div>
                     </div>
                   </div>
@@ -271,7 +270,7 @@ export default function TeaStoreApp() {
           {view === 'cart' && (
             <div className="space-y-6 animate-fade-in">
               <div className="flex items-center gap-4 px-2">
-                <button onClick={() => setView('home')} className="bg-white p-2.5 rounded-full shadow-sm text-[#537A5F] hover:bg-gray-50 border border-emerald-50">
+                <button onClick={() => setView('home')} className="bg-white p-2.5 rounded-full shadow-sm text-[#537A5F] hover:bg-emerald-50">
                   <ArrowLeft size={20}/>
                 </button>
                 <div>
@@ -287,36 +286,30 @@ export default function TeaStoreApp() {
                   <p className="text-xs text-[#8EBB9F] mt-1 mb-6">Your cart is currently empty.</p>
                   <button 
                     onClick={() => setView('home')}
-                    className="px-8 py-3 bg-[#537A5F] text-white rounded-full font-bold shadow-md hover:bg-[#43634D] transition-colors inline-flex items-center gap-2"
+                    className="px-8 py-3 bg-[#537A5F] text-white rounded-full font-bold shadow-md hover:bg-[#43634D] transition-colors"
                   >
-                    去逛逛茶款 <span className="text-[10px] opacity-70 uppercase font-normal">Go Shopping</span>
+                    去逛逛茶款 <span className="text-[10px] ml-1 opacity-70 uppercase font-normal">Go Shopping</span>
                   </button>
                 </div>
               ) : (
                 <div className="space-y-4">
-                  {cart.map(item => {
-                    const unit = item.catId === 'teabag' ? '組' : '斤';
-                    return (
+                  {cart.map(item => (
                     <div key={item.cartId} className="bg-white p-4 rounded-3xl shadow-sm flex items-center gap-4 border border-emerald-50">
-                      <img src={item.image} className="w-16 h-16 rounded-2xl object-cover shadow-inner" alt=""/>
+                      <img src={item.image} className="w-16 h-16 rounded-2xl object-cover" alt=""/>
                       <div className="flex-1">
-                        <h3 className="font-bold text-[#537A5F] leading-tight text-sm">{item.name}</h3>
+                        <h3 className="font-bold text-[#537A5F] leading-tight">{item.name}</h3>
+                        <div className="text-[9px] text-gray-400 uppercase mb-1">{item.nameEn}</div>
                         
-                        <div className="mt-1.5 flex flex-wrap gap-1.5">
-                          <span className="text-[10px] text-[#537A5F] font-medium bg-emerald-50 px-2 py-0.5 rounded-md border border-emerald-100">
-                            {item.roast}
-                          </span>
-                          <span className="text-[10px] text-gray-500 font-medium bg-gray-50 px-2 py-0.5 rounded-md border border-gray-100">
-                            {item.quantity} {unit}
-                          </span>
-                        </div>
-                        <div className="font-bold text-[#537A5F] mt-1.5">$ {item.totalPrice}</div>
+                        <p className="text-xs text-[#537A5F] font-medium bg-emerald-50 inline-block px-2.5 py-1 rounded-lg">
+                          {item.roast} · {item.quantity} {item.catId === 'teabag' ? '組' : '斤'}
+                        </p>
+                        <div className="font-bold text-[#537A5F] mt-1">$ {item.totalPrice}</div>
                       </div>
-                      <button onClick={() => removeFromCart(item.cartId)} className="text-red-400 hover:text-red-600 bg-red-50 hover:bg-red-100 p-2.5 rounded-xl transition-colors shrink-0">
+                      <button onClick={() => removeFromCart(item.cartId)} className="text-red-400 hover:text-red-600 bg-red-50 hover:bg-red-100 p-2.5 rounded-xl transition-colors">
                         <Trash2 size={18}/>
                       </button>
                     </div>
-                  )})}
+                  ))}
                   
                   <div className="mt-6 p-5 bg-white rounded-3xl shadow-sm border border-emerald-50">
                     <div className="mb-4">
@@ -336,10 +329,8 @@ export default function TeaStoreApp() {
                           </div>
                         </div>
                         <div className="flex items-center gap-3">
-                          <span className="font-bold text-[#8EBB9F] text-sm">+$ {SHIPPING_FEE['711']}</span>
-                          <div className={`w-5 h-5 rounded-full border-2 flex items-center justify-center ${shippingMethod === '711' ? 'border-[#537A5F]' : 'border-gray-300'}`}>
-                            {shippingMethod === '711' && <div className="w-2.5 h-2.5 bg-[#537A5F] rounded-full"></div>}
-                          </div>
+                          <span className="font-bold text-[#537A5F] text-sm">+$ {SHIPPING_FEE['711']}</span>
+                          <input type="radio" name="shipping" value="711" checked={shippingMethod === '711'} onChange={() => setShippingMethod('711')} className="w-5 h-5 accent-[#537A5F]"/>
                         </div>
                       </label>
 
@@ -354,27 +345,28 @@ export default function TeaStoreApp() {
                           </div>
                         </div>
                         <div className="flex items-center gap-3">
-                          <span className="font-bold text-[#8EBB9F] text-sm">+$ {SHIPPING_FEE['home']}</span>
-                          <div className={`w-5 h-5 rounded-full border-2 flex items-center justify-center ${shippingMethod === 'home' ? 'border-[#537A5F]' : 'border-gray-300'}`}>
-                            {shippingMethod === 'home' && <div className="w-2.5 h-2.5 bg-[#537A5F] rounded-full"></div>}
-                          </div>
+                          <span className="font-bold text-[#537A5F] text-sm">+$ {SHIPPING_FEE['home']}</span>
+                          <input type="radio" name="shipping" value="home" checked={shippingMethod === 'home'} onChange={() => setShippingMethod('home')} className="w-5 h-5 accent-[#537A5F]"/>
                         </div>
                       </label>
                     </div>
                   </div>
 
-                  {/* 備註欄位 */}
+                  {/* 新增：訂單備註欄位 */}
                   <div className="mt-4 p-5 bg-white rounded-3xl shadow-sm border border-emerald-50">
                     <div className="mb-3 flex items-center gap-2">
-                      <Edit3 size={16} className="text-[#8EBB9F]" />
-                      <h3 className="font-bold text-[#537A5F] leading-tight">訂單備註 (選填)</h3>
+                      <Edit3 size={18} className="text-[#537A5F]" />
+                      <div>
+                        <h3 className="font-bold text-[#537A5F] leading-tight">訂單備註 (選填)</h3>
+                        <div className="text-[10px] text-[#8EBB9F] uppercase tracking-wider">Order Notes</div>
+                      </div>
                     </div>
                     <textarea 
                       value={orderNote}
                       onChange={(e) => setOrderNote(e.target.value)}
-                      placeholder="有什麼想告訴我們的嗎？ (例如：希望的到貨時段、包裝需求...)"
-                      className="w-full bg-gray-50 border border-gray-200 rounded-xl p-3 text-sm text-[#3B5E46] focus:outline-none focus:ring-2 focus:ring-[#8EBB9F] focus:border-transparent resize-none h-24"
-                    ></textarea>
+                      placeholder="有什麼想告訴我們的嗎？(例如：希望的出貨時間等)"
+                      className="w-full bg-gray-50 border border-gray-200 rounded-2xl p-4 text-sm text-[#537A5F] placeholder-gray-400 focus:outline-none focus:ring-2 focus:ring-[#8EBB9F] focus:bg-white transition-all resize-none h-24"
+                    />
                   </div>
 
                   <div className="mt-8 p-6 bg-[#537A5F] text-white rounded-[2rem] shadow-xl relative overflow-hidden">
@@ -382,11 +374,15 @@ export default function TeaStoreApp() {
                     
                     <div className="space-y-3 mb-6 relative z-10 text-sm">
                       <div className="flex justify-between items-center text-[#C1E3CE]">
-                        <div><span>商品總計</span> <span className="text-[10px] ml-1 uppercase opacity-70">Subtotal</span></div>
+                        <div>
+                          <span>商品總計</span> <span className="text-[10px] ml-1 uppercase opacity-70">Subtotal</span>
+                        </div>
                         <span className="font-medium">$ {itemsTotal}</span>
                       </div>
                       <div className="flex justify-between items-center text-[#C1E3CE]">
-                        <div><span>運費</span> <span className="text-[10px] ml-1 uppercase opacity-70">Shipping Fee</span></div>
+                        <div>
+                          <span>運費</span> <span className="text-[10px] ml-1 uppercase opacity-70">Shipping Fee</span>
+                        </div>
                         <span className="font-medium">$ {currentShippingFee}</span>
                       </div>
                     </div>
@@ -401,18 +397,20 @@ export default function TeaStoreApp() {
                     
                     <button 
                       onClick={submitOrder}
-                      className="w-full bg-white text-[#537A5F] py-4 rounded-2xl font-bold flex flex-col items-center justify-center shadow-lg hover:bg-gray-50 transition relative z-10"
+                      className="w-full bg-white text-[#537A5F] py-4 rounded-2xl font-bold flex flex-col items-center justify-center shadow-lg hover:bg-gray-100 transition relative z-10"
                     >
                       <div className="flex items-center gap-2">
-                        <Send size={18}/> <span>確認結帳並傳送訂單</span>
+                        <Send size={18}/> <span>傳送訂單至 LINE</span>
                       </div>
+                      <span className="text-[10px] font-normal text-gray-500 uppercase mt-0.5">Send Order via LINE</span>
                     </button>
 
                     <button 
                       onClick={() => setView('home')}
-                      className="w-full bg-transparent border border-[#8EBB9F] text-white mt-3 py-3 rounded-2xl font-bold flex flex-col items-center justify-center hover:bg-[#6C9A7C]/50 transition relative z-10 text-sm"
+                      className="w-full bg-transparent border border-[#8EBB9F] text-white mt-3 py-3.5 rounded-2xl font-bold flex flex-col items-center justify-center hover:bg-[#6C9A7C]/50 transition relative z-10"
                     >
                       <span>繼續購物</span>
+                      <span className="text-[9px] font-normal text-[#C1E3CE] uppercase mt-0.5">Continue Shopping</span>
                     </button>
                   </div>
                 </div>
@@ -421,42 +419,41 @@ export default function TeaStoreApp() {
           )}
         </main>
 
-        {/* 購物選項彈出框 (Bottom Sheet) */}
         {selectedProduct && tempOptions.roastObj && (
-          <div className="absolute inset-0 bg-black/60 z-50 flex items-end justify-center backdrop-blur-sm transition-opacity">
-            {/* 點擊背景關閉 */}
-            <div className="absolute inset-0" onClick={() => setSelectedProduct(null)}></div>
-            
-            <div className="bg-white w-full rounded-t-[2.5rem] p-6 pb-10 shadow-2xl relative animate-slide-up max-h-[90vh] overflow-y-auto">
-              <div className="w-12 h-1.5 bg-gray-200 rounded-full mx-auto mb-6 shrink-0"></div>
+          <div className="fixed inset-0 bg-black/60 z-50 flex items-end justify-center backdrop-blur-sm transition-opacity">
+            <div className="bg-white w-full max-w-md rounded-t-[2.5rem] p-6 pb-12 shadow-2xl relative animate-slide-up">
+              <div className="w-12 h-1.5 bg-gray-200 rounded-full mx-auto mb-6"></div>
               
               <div className="flex justify-between items-start mb-6">
-                <div className="flex-1 pr-4">
-                  <h3 className="text-xl font-extrabold text-[#537A5F] leading-tight mb-1">{selectedProduct.name}</h3>
+                <div>
+                  <h3 className="text-2xl font-extrabold text-[#537A5F] leading-tight">{selectedProduct.name}</h3>
+                  <p className="text-[11px] text-gray-400 uppercase tracking-widest mt-1 mb-2">{selectedProduct.nameEn}</p>
                   <div className="inline-block bg-emerald-50 text-[#537A5F] font-bold px-3 py-1 rounded-lg text-sm border border-emerald-100">
                     單價 $ {tempOptions.roastObj.price} / {selectedProduct.catId === 'teabag' ? '組' : '斤'}
                   </div>
                 </div>
-                <button onClick={() => setSelectedProduct(null)} className="text-gray-400 bg-gray-50 hover:bg-gray-100 p-2 rounded-full transition-colors shrink-0">✕</button>
+                <button onClick={() => setSelectedProduct(null)} className="text-gray-400 bg-gray-50 hover:bg-gray-100 p-2.5 rounded-full transition-colors">✕</button>
               </div>
               
-              <div className="mb-6 bg-gray-50 p-4 rounded-3xl border border-gray-100">
+              <div className="mb-6 bg-gray-50 p-5 rounded-[1.5rem] border border-gray-100">
                 <div className="mb-3">
-                  <label className="block text-sm text-[#537A5F] font-bold leading-tight">1. 選擇規格</label>
+                  <label className="block text-sm text-[#537A5F] font-bold leading-tight">
+                    {selectedProduct.catId === 'teabag' ? '1. 選擇茶包口味' : '1. 選擇烘焙程度'}
+                  </label>
                   <span className="text-[10px] text-gray-400 uppercase">Select Options</span>
                 </div>
-                <div className="flex gap-2 flex-wrap">
+                <div className="flex gap-3 flex-wrap">
                   {selectedProduct.roastOptions.map(roast => (
                     <button 
                       key={roast.level}
                       onClick={() => setTempOptions({...tempOptions, roastObj: roast})}
-                      className={`flex-1 min-w-[30%] py-2.5 px-2 rounded-xl border-2 transition-all font-medium flex flex-col items-center justify-center ${
+                      className={`flex-1 min-w-[100px] py-3 px-2 rounded-xl border-2 transition-all font-medium flex flex-col items-center justify-center ${
                         tempOptions.roastObj.level === roast.level 
                         ? 'bg-[#537A5F] text-white border-[#537A5F] shadow-md' 
                         : 'bg-white text-[#537A5F] border-gray-200 hover:border-[#8EBB9F]'
                       }`}
                     >
-                      <span className="text-sm">{roast.level}</span>
+                      <span>{roast.level}</span>
                       <span className={`text-[9px] mt-0.5 uppercase ${tempOptions.roastObj.level === roast.level ? 'text-[#C1E3CE]' : 'text-gray-400'}`}>
                         {roast.levelEn}
                       </span>
@@ -465,21 +462,23 @@ export default function TeaStoreApp() {
                 </div>
               </div>
 
-              <div className="mb-8 bg-gray-50 p-4 rounded-3xl border border-gray-100">
+              <div className="mb-8 bg-gray-50 p-5 rounded-[1.5rem] border border-gray-100">
                 <div className="mb-3">
-                  <label className="block text-sm text-[#537A5F] font-bold leading-tight">2. 購買數量 ({selectedProduct.catId === 'teabag' ? '組' : '斤'})</label>
+                  <label className="block text-sm text-[#537A5F] font-bold leading-tight">
+                    2. 購買數量 ({selectedProduct.catId === 'teabag' ? '組' : '斤'})
+                  </label>
                   <span className="text-[10px] text-gray-400 uppercase">Quantity</span>
                 </div>
-                <div className="flex items-center gap-5 w-full bg-white rounded-2xl border border-gray-200 p-2 shadow-sm">
+                <div className="flex items-center gap-5 w-full bg-white rounded-xl border border-gray-200 p-2 shadow-sm">
                   <button 
                     onClick={() => setTempOptions({...tempOptions, quantity: Math.max(1, tempOptions.quantity - 1)})}
-                    className="bg-gray-50 p-3 rounded-xl text-[#537A5F] hover:bg-gray-100 transition-colors"
-                  ><Minus size={18}/></button>
+                    className="bg-gray-50 p-3 rounded-lg text-[#537A5F] hover:bg-gray-100 transition-colors"
+                  ><Minus size={20}/></button>
                   <span className="font-extrabold text-2xl flex-1 text-center text-[#537A5F]">{tempOptions.quantity}</span>
                   <button 
                     onClick={() => setTempOptions({...tempOptions, quantity: tempOptions.quantity + 1})}
-                    className="bg-[#537A5F] text-white p-3 rounded-xl shadow-sm hover:bg-[#43634D] transition-colors"
-                  ><Plus size={18}/></button>
+                    className="bg-[#537A5F] text-white p-3 rounded-lg shadow-sm hover:bg-[#43634D] transition-colors"
+                  ><Plus size={20}/></button>
                 </div>
               </div>
 
@@ -488,9 +487,10 @@ export default function TeaStoreApp() {
                 className="w-full bg-[#537A5F] text-white py-4 px-6 rounded-2xl font-bold shadow-xl hover:bg-[#43634D] transition-colors flex justify-between items-center group"
               >
                 <div className="flex flex-col text-left">
-                  <span className="text-base">加入購物車</span>
+                  <span className="text-lg">加入購物車</span>
+                  <span className="text-[10px] text-[#C1E3CE] uppercase font-normal">Add to Cart</span>
                 </div>
-                <div className="bg-white/20 px-4 py-1.5 rounded-xl group-hover:bg-white/30 transition-colors">
+                <div className="bg-white/20 px-4 py-2 rounded-xl group-hover:bg-white/30 transition-colors">
                   $ {tempOptions.roastObj.price * tempOptions.quantity}
                 </div>
               </button>
@@ -498,7 +498,6 @@ export default function TeaStoreApp() {
           </div>
         )}
 
-        {/* 底部導覽列 (絕對定位在手機容器底部) */}
         <nav className="absolute bottom-6 left-1/2 -translate-x-1/2 w-[85%] bg-[#537A5F] text-white py-3 px-8 rounded-full flex justify-between items-center shadow-[0_10px_30px_-5px_rgba(83,122,95,0.7)] z-30 border border-white/10">
           <button 
             onClick={() => setView('home')} 
