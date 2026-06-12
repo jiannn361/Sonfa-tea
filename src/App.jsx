@@ -133,19 +133,19 @@ export default function TeaStoreApp() {
     // === 1. 純文字版本 (給未開啟 LIFF 時的備用方案) ===
     const orderText = cart.map(item => {
       const unit = item.catId === 'teabag' ? '組' : '斤';
-      return `・${item.name} (${item.roast}) x ${item.quantity}${unit} = $${item.totalPrice}`;
+      return `・${item.name} (${item.roast}) x ${String(item.quantity)}${unit} = $${String(item.totalPrice)}`;
     }).join('\n');
     
-    const textMessage = `🍵 [崧發茶園好茶時光 - 新訂單]\n\n👤 姓名: ${customerName}\n📱 電話: ${customerPhone}\n🚚 運送 (${shippingText}): ${shippingAddress}\n\n${orderText}\n\n📍 商品總計: $${itemsTotal}\n📦 運費: $${currentShippingFee}${noteText}\n💰 總結帳金額: $${cartTotal}`;
+    const textMessage = `🍵 [崧發茶園好茶時光 - 新訂單]\n\n👤 姓名: ${customerName}\n📱 電話: ${customerPhone}\n🚚 運送 (${shippingText}): ${shippingAddress}\n\n${orderText}\n\n📍 商品總計: $${String(itemsTotal)}\n📦 運費: $${String(currentShippingFee)}${noteText}\n💰 總結帳金額: $${String(cartTotal)}`;
 
-    // === 2. 漂亮圖卡版本 (LINE Flex Message 收據樣式) ===
+    // === 2. 漂亮圖卡版本 (LINE Flex Message 收據樣式) - 嚴格遵守字串規範 ===
     const cartFlexContents = cart.map(item => {
       const unit = item.catId === 'teabag' ? '組' : '斤';
       return {
         type: "box", layout: "horizontal", margin: "md",
         contents: [
-          { type: "text", text: `${item.name}\n(${item.roast}) x ${item.quantity}${unit}`, size: "sm", color: "#555555", wrap: true, flex: 3 },
-          { type: "text", text: `$${item.totalPrice}`, size: "sm", color: "#111111", align: "end", flex: 1, weight: "bold" }
+          { type: "text", text: `${item.name}\n(${item.roast}) x ${String(item.quantity)}${unit}`, size: "sm", color: "#555555", wrap: true, flex: 3 },
+          { type: "text", text: `$${String(item.totalPrice)}`, size: "sm", color: "#111111", align: "end", flex: 1, weight: "bold" }
         ]
       };
     });
@@ -166,7 +166,7 @@ export default function TeaStoreApp() {
             { type: "text", text: new Date().toLocaleString('zh-TW'), size: "xs", color: "#aaaaaa" },
             { type: "separator", margin: "xl", color: "#e0e0e0" },
             
-            // 顧客資訊區塊 (新增)
+            // 顧客資訊區塊
             { type: "box", layout: "vertical", margin: "xl", spacing: "sm", contents: [
               { type: "text", text: "訂購人資訊", size: "sm", color: "#537A5F", weight: "bold", margin: "sm" },
               { type: "box", layout: "horizontal", contents: [
@@ -194,15 +194,15 @@ export default function TeaStoreApp() {
             { type: "box", layout: "vertical", margin: "xl", spacing: "sm", contents: [
               { type: "box", layout: "horizontal", contents: [
                 { type: "text", text: "商品總計", size: "sm", color: "#555555" },
-                { type: "text", text: `$${itemsTotal}`, size: "sm", color: "#111111", align: "end" }
+                { type: "text", text: `$${String(itemsTotal)}`, size: "sm", color: "#111111", align: "end" }
               ]},
               { type: "box", layout: "horizontal", contents: [
                 { type: "text", text: `運費 (${shippingText})`, size: "sm", color: "#555555" },
-                { type: "text", text: `$${currentShippingFee}`, size: "sm", color: "#111111", align: "end" }
+                { type: "text", text: `$${String(currentShippingFee)}`, size: "sm", color: "#111111", align: "end" }
               ]}
             ]},
             
-            // 備註 (如果有填寫才顯示)
+            // 備註 (如果有填寫才顯示) - 安全陣列解構
             ...(orderNote.trim() ? [
               { type: "box", layout: "horizontal", margin: "md", contents: [
                 { type: "text", text: "備註", size: "sm", color: "#537A5F", weight: "bold", flex: 1 },
@@ -215,7 +215,7 @@ export default function TeaStoreApp() {
             // 總計
             { type: "box", layout: "horizontal", margin: "xl", contents: [
               { type: "text", text: "總結帳金額", size: "md", color: "#111111", weight: "bold" },
-              { type: "text", text: `$${cartTotal}`, size: "xl", color: "#537A5F", weight: "bold", align: "end" }
+              { type: "text", text: `$${String(cartTotal)}`, size: "xl", color: "#537A5F", weight: "bold", align: "end" }
             ]}
           ]}
         ]
@@ -248,18 +248,18 @@ export default function TeaStoreApp() {
       try {
         await window.liff.sendMessages([{ 
           type: 'flex', 
-          altText: `收到新訂單 (${customerName})：總計 $${cartTotal}`, 
+          altText: `收到新訂單 (${customerName})：總計 $${String(cartTotal)}`, 
           contents: flexMessage 
         }]);
         window.liff.closeWindow(); 
       } catch (error) {
         console.error("Flex Message 傳送失敗", error);
-        // 處理 LIFF 權限沒開導致的錯誤，避免按鈕死機
-        setFormError('⚠️ 圖卡傳送失敗（LINE權限未開），為您改用文字傳送...');
+        // 這是除錯關鍵！如果圖卡失敗，把真正的錯誤訊息印出來給我們看
+        setFormError(`⚠️ 圖卡失敗代碼：${error.message}。改用文字傳送...`);
         setTimeout(() => {
           const lineUrl = `https://line.me/R/oaMessage/${LINE_OA_ID}?text=${encodeURIComponent(textMessage)}`;
           window.location.href = lineUrl;
-        }, 2500);
+        }, 3500);
       }
     } else {
       const lineUrl = `https://line.me/R/oaMessage/${LINE_OA_ID}?text=${encodeURIComponent(textMessage)}`;
