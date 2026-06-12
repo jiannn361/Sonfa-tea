@@ -181,7 +181,7 @@ export default function TeaStoreApp() {
               }
             ]
           },
-          { type: "separator", margin: "lg", style: "dashed" },
+          { type: "separator", margin: "lg" },
           // 購物明細清單
           {
             type: "box",
@@ -339,7 +339,7 @@ export default function TeaStoreApp() {
             </div>
           )}
 
-          {}
+          {/* 分類詳情頁 */}
           {view === 'detail' && selectedCat && (
             <div className="space-y-6 animate-fade-in md:max-w-3xl md:mx-auto">
               <button 
@@ -386,7 +386,7 @@ export default function TeaStoreApp() {
             </div>
           )}
 
-          {}
+          {/* 購物車頁面 */}
           {view === 'cart' && (
             <div className="space-y-6 animate-fade-in md:max-w-2xl md:mx-auto">
               <div className="flex items-center gap-4 px-2">
@@ -570,7 +570,7 @@ export default function TeaStoreApp() {
           )}
         </main>
 
-        {}
+        {/* 購買選項小視窗 */}
         {selectedProduct && tempOptions.roastObj && (
           <div className="fixed inset-0 bg-black/60 z-50 flex items-center md:items-center justify-center backdrop-blur-sm p-4">
             <div className="bg-white w-full max-w-md rounded-[2.5rem] p-6 pb-8 shadow-2xl relative animate-slide-up">
@@ -643,7 +643,7 @@ export default function TeaStoreApp() {
           </div>
         )}
 
-        {}
+        {/* 底部導覽列 */}
         <nav className="fixed bottom-6 left-1/2 -translate-x-1/2 w-[90%] md:w-full md:max-w-md bg-[#537A5F] text-white py-3 px-8 rounded-full flex justify-between items-center shadow-[0_10px_40px_-10px_rgba(83,122,95,0.6)] z-40 border border-white/10">
           <button onClick={() => setView('home')} className={`p-2 transition-colors flex flex-col items-center gap-1 ${view === 'home' || view === 'detail' ? 'text-white' : 'text-[#8EBB9F]'}`}>
             <Home size={24} />
