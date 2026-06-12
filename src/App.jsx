@@ -41,7 +41,8 @@ const INITIAL_DATA = {
 // === 2. 系統設定 ===
 const GOOGLE_SHEET_API_URL = ""; 
 const LIFF_ID = "2010360336-i18Jsouu"; // 請在此填入您的 LIFF ID
-const LINE_OA_ID = "@930nydzu"; // ⚠️ 請在此填入您的 LINE 官方帳號 ID (開頭一定要有@)
+// ⚠️ 關鍵錯誤點：請務必將下方的 @YOUR_LINE_ID 替換成您真實的官方帳號 ID！例如 "@930nydzu"
+const LINE_OA_ID = "@930nydzu"; // 必須包含 @ 符號！
 const SHIPPING_FEE = { '711': 60, 'home': 100 };
 
 export default function TeaStoreApp() {
@@ -120,17 +121,16 @@ export default function TeaStoreApp() {
   const submitOrder = async () => {
     if (cart.length === 0) return;
 
-    // 表單防呆驗證
     if (!customerName.trim() || !customerPhone.trim() || !shippingAddress.trim()) {
       setFormError('⚠️ 訂單無法送出：請確實填寫「姓名」、「電話」與「運送地址/門市」喔！');
       return;
     }
-    setFormError(''); // 清除錯誤
+    setFormError(''); 
 
     const shippingText = shippingMethod === '711' ? '7-11 店到店' : '宅配到府';
     const noteText = orderNote.trim() ? `\n📝 備註: ${orderNote}` : '';
     
-    // === 1. 純文字版本 (給未開啟 LIFF 時的備用方案) ===
+    // === 1. 純文字版本 ===
     const orderText = cart.map(item => {
       const unit = item.catId === 'teabag' ? '組' : '斤';
       return `・${item.name} (${item.roast}) x ${String(item.quantity)}${unit} = $${String(item.totalPrice)}`;
@@ -138,7 +138,7 @@ export default function TeaStoreApp() {
     
     const textMessage = `🍵 [崧發茶園好茶時光 - 新訂單]\n\n👤 姓名: ${customerName}\n📱 電話: ${customerPhone}\n🚚 運送 (${shippingText}): ${shippingAddress}\n\n${orderText}\n\n📍 商品總計: $${String(itemsTotal)}\n📦 運費: $${String(currentShippingFee)}${noteText}\n💰 總結帳金額: $${String(cartTotal)}`;
 
-    // === 2. 漂亮圖卡版本 (LINE Flex Message 收據樣式) - 嚴格遵守字串規範 ===
+    // === 2. 漂亮圖卡版本 (嚴格符合 LINE 規範) ===
     const cartFlexContents = cart.map(item => {
       const unit = item.catId === 'teabag' ? '組' : '斤';
       return {
@@ -156,17 +156,14 @@ export default function TeaStoreApp() {
       body: {
         type: "box", layout: "vertical", paddingAll: "0px",
         contents: [
-          // 頂部綠色橫幅
           { type: "box", layout: "vertical", backgroundColor: "#537A5F", paddingAll: "xl", contents: [
             { type: "text", text: "NEW ORDER", color: "#C1E3CE", weight: "bold", size: "sm" },
             { type: "text", text: "好茶時光 訂單明細", color: "#ffffff", weight: "bold", size: "xl", margin: "md" }
           ]},
-          // 內容區塊
           { type: "box", layout: "vertical", paddingAll: "xl", contents: [
             { type: "text", text: new Date().toLocaleString('zh-TW'), size: "xs", color: "#aaaaaa" },
             { type: "separator", margin: "xl", color: "#e0e0e0" },
             
-            // 顧客資訊區塊
             { type: "box", layout: "vertical", margin: "xl", spacing: "sm", contents: [
               { type: "text", text: "訂購人資訊", size: "sm", color: "#537A5F", weight: "bold", margin: "sm" },
               { type: "box", layout: "horizontal", contents: [
@@ -185,12 +182,10 @@ export default function TeaStoreApp() {
             
             { type: "separator", margin: "xl", color: "#e0e0e0", style: "dashed" },
             
-            // 商品列表
             { type: "text", text: "購買明細", size: "sm", color: "#537A5F", weight: "bold", margin: "xl" },
             { type: "box", layout: "vertical", margin: "md", contents: cartFlexContents },
             { type: "separator", margin: "xl", color: "#e0e0e0" },
             
-            // 小計與運費
             { type: "box", layout: "vertical", margin: "xl", spacing: "sm", contents: [
               { type: "box", layout: "horizontal", contents: [
                 { type: "text", text: "商品總計", size: "sm", color: "#555555" },
@@ -202,7 +197,6 @@ export default function TeaStoreApp() {
               ]}
             ]},
             
-            // 備註 (如果有填寫才顯示) - 安全陣列解構
             ...(orderNote.trim() ? [
               { type: "box", layout: "horizontal", margin: "md", contents: [
                 { type: "text", text: "備註", size: "sm", color: "#537A5F", weight: "bold", flex: 1 },
@@ -212,7 +206,6 @@ export default function TeaStoreApp() {
             
             { type: "separator", margin: "xl", color: "#e0e0e0", style: "dashed" },
             
-            // 總計
             { type: "box", layout: "horizontal", margin: "xl", contents: [
               { type: "text", text: "總結帳金額", size: "md", color: "#111111", weight: "bold" },
               { type: "text", text: `$${String(cartTotal)}`, size: "xl", color: "#537A5F", weight: "bold", align: "end" }
@@ -222,7 +215,6 @@ export default function TeaStoreApp() {
       }
     };
 
-    // === 3. 傳送資料到 Google Sheet ===
     if (GOOGLE_SHEET_API_URL) {
       try {
         await fetch(GOOGLE_SHEET_API_URL, {
