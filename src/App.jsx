@@ -41,6 +41,7 @@ const INITIAL_DATA = {
 // === 2. 系統設定 ===
 const GOOGLE_SHEET_API_URL = ""; 
 const LIFF_ID = "2010360336-i18Jsouu"; // 請在此填入您的 LIFF ID
+const LINE_OA_ID = "@930nydzu"; // ⚠️ 請在此填入您的 LINE 官方帳號 ID (開頭一定要有@)
 const SHIPPING_FEE = { '711': 60, 'home': 100 };
 
 export default function TeaStoreApp() {
@@ -121,7 +122,7 @@ export default function TeaStoreApp() {
 
     // 表單防呆驗證
     if (!customerName.trim() || !customerPhone.trim() || !shippingAddress.trim()) {
-      setFormError('請確實填寫「姓名」、「電話」與「運送地址/門市」喔！');
+      setFormError('⚠️ 訂單無法送出：請確實填寫「姓名」、「電話」與「運送地址/門市」喔！');
       return;
     }
     setFormError(''); // 清除錯誤
@@ -135,7 +136,7 @@ export default function TeaStoreApp() {
       return `・${item.name} (${item.roast}) x ${item.quantity}${unit} = $${item.totalPrice}`;
     }).join('\n');
     
-    const textMessage = `🍵 [好茶時光 - 新訂單]\n\n👤 姓名: ${customerName}\n📱 電話: ${customerPhone}\n🚚 運送 (${shippingText}): ${shippingAddress}\n\n${orderText}\n\n📍 商品總計: $${itemsTotal}\n📦 運費: $${currentShippingFee}${noteText}\n💰 總結帳金額: $${cartTotal}`;
+    const textMessage = `🍵 [崧發茶園好茶時光 - 新訂單]\n\n👤 姓名: ${customerName}\n📱 電話: ${customerPhone}\n🚚 運送 (${shippingText}): ${shippingAddress}\n\n${orderText}\n\n📍 商品總計: $${itemsTotal}\n📦 運費: $${currentShippingFee}${noteText}\n💰 總結帳金額: $${cartTotal}`;
 
     // === 2. 漂亮圖卡版本 (LINE Flex Message 收據樣式) ===
     const cartFlexContents = cart.map(item => {
@@ -253,9 +254,15 @@ export default function TeaStoreApp() {
         window.liff.closeWindow(); 
       } catch (error) {
         console.error("Flex Message 傳送失敗", error);
+        // 處理 LIFF 權限沒開導致的錯誤，避免按鈕死機
+        setFormError('⚠️ 圖卡傳送失敗（LINE權限未開），為您改用文字傳送...');
+        setTimeout(() => {
+          const lineUrl = `https://line.me/R/oaMessage/${LINE_OA_ID}?text=${encodeURIComponent(textMessage)}`;
+          window.location.href = lineUrl;
+        }, 2500);
       }
     } else {
-      const lineUrl = `https://line.me/R/oaMessage/@YOUR_LINE_ID?text=${encodeURIComponent(textMessage)}`;
+      const lineUrl = `https://line.me/R/oaMessage/${LINE_OA_ID}?text=${encodeURIComponent(textMessage)}`;
       window.location.href = lineUrl;
     }
   };
