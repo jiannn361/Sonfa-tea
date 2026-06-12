@@ -147,7 +147,7 @@ export default function TeaStoreApp() {
           // 標題
           {
             type: "text",
-            text: "好茶時光 訂單明細",
+            text: "崧發茶園 訂單明細",
             weight: "bold",
             size: "xl",
             color: "#537A5F",
