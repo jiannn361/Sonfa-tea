@@ -1,8 +1,7 @@
 import { useState, useEffect, useMemo } from 'react';
-import { ShoppingBag, Home, User, Plus, Minus, Trash2, Send, ArrowLeft, Search, ImageIcon, Store, Truck, Edit3 } from 'lucide-react';
+import { ShoppingBag, Home, User, Plus, Minus, Trash2, Send, ArrowLeft, Search, ImageIcon, Store, Truck, Edit3, UserCircle, Phone, MapPin } from 'lucide-react';
 
-// 這裡的路徑全部改為對應 public 資料夾內的檔案
-// 請確保您的 public 資料夾內有對應檔名的圖片，例如 tea-placeholder.jpg
+// === 1. 商品資料區 ===
 const DEFAULT_IMG = '/tea-placeholder.jpg'; 
 const TEA_BAG_IMG = '/teabag.jpg';
 
@@ -18,32 +17,17 @@ const INITIAL_DATA = {
     { id: 'teabag', name: '茶包組', nameEn: 'Tea Bags', image: '/cat-teabag.jpg' },
   ],
   products: [
-    // 金萱茶
     { id: 101, catId: 'jinxuan', name: '阿里山金萱茶', nameEn: 'Alishan Jin Xuan', desc: '帶有淡雅奶香與桂花香。', image: '/prod-jinxuan.jpg', roastOptions: [{ level: '輕焙', levelEn: 'Light', price: 1200 }, { level: '中焙', levelEn: 'Medium', price: 1300 }] },
-    
-    // 烏龍茶
     { id: 201, catId: 'oolong', name: '高山烏龍', nameEn: 'High Mountain Oolong', desc: '喉韻甘甜，回甘持久。', image: '/prod-oolong1.jpg', roastOptions: [{ level: '輕焙', levelEn: 'Light', price: 1500 }, { level: '中焙', levelEn: 'Medium', price: 1600 }] },
     { id: 202, catId: 'oolong', name: '紅烏龍', nameEn: 'Red Oolong', desc: '熟果香氣，滋味醇厚。', image: '/prod-oolong2.jpg', roastOptions: [{ level: '中重焙', levelEn: 'Medium-Heavy', price: 1600 }] },
     { id: 203, catId: 'oolong', name: '紅水烏龍', nameEn: 'Red Water Oolong', desc: '傳統發酵，水色琥珀。', image: '/prod-oolong3.jpg', roastOptions: [{ level: '重發酵', levelEn: 'Heavy Fermentation', price: 1800 }] },
     { id: 204, catId: 'oolong', name: '白烏龍', nameEn: 'White Oolong', desc: '清香淡雅，如花香撲鼻。', image: '/prod-oolong4.jpg', roastOptions: [{ level: '輕發酵', levelEn: 'Light Fermentation', price: 1500 }] },
-    
-    // GABA茶
     { id: 301, catId: 'gaba', name: '佳葉龍茶 (GABA)', nameEn: 'GABA Tea', desc: '富含γ-胺基丁酸，舒緩身心。', image: '/prod-gaba.jpg', roastOptions: [{ level: '標準', levelEn: 'Standard', price: 2000 }] },
-    
-    // 小葉種紅茶
     { id: 401, catId: 'black', name: '金芽紅茶', nameEn: 'Golden Bud Black Tea', desc: '毫香顯露，滋味甜潤。', image: '/prod-black1.jpg', roastOptions: [{ level: '全發酵', levelEn: 'Fully Fermented', price: 1800 }] },
     { id: 402, catId: 'black', name: '蜜香紅茶', nameEn: 'Honey Black Tea', desc: '天然蜜香，小綠葉蟬叮咬。', image: '/prod-black2.jpg', roastOptions: [{ level: '全發酵', levelEn: 'Fully Fermented', price: 2200 }] },
-    
-    // 綠茶
     { id: 501, catId: 'green', name: '精選綠茶', nameEn: 'Premium Green Tea', desc: '保留豐富兒茶素，清爽解膩。', image: '/prod-green.jpg', roastOptions: [{ level: '不發酵', levelEn: 'Unfermented', price: 1000 }] },
-    
-    // 白茶
     { id: 601, catId: 'white', name: '精選白茶', nameEn: 'Premium White Tea', desc: '毫香清鮮，自然萎凋。', image: '/prod-white.jpg', roastOptions: [{ level: '微發酵', levelEn: 'Slightly Fermented', price: 1600 }] },
-    
-    // 茉莉花茶
     { id: 701, catId: 'jasmine', name: '頂級茉莉花茶', nameEn: 'Jasmine Green Tea', desc: '新鮮茉莉花層層窨製。', image: '/prod-jasmine.jpg', roastOptions: [{ level: '不發酵', levelEn: 'Unfermented', price: 1500 }] },
-    
-    // 茶包組
     { id: 801, catId: 'teabag', name: '原片茶包組 (50包/組)', nameEn: 'Tea Bag Set (50pcs)', desc: '方便沖泡，隨時享受好茶。', image: TEA_BAG_IMG, roastOptions: [
       { level: '紅茶', levelEn: 'Black Tea', price: 600 },
       { level: '烏龍茶', levelEn: 'Oolong Tea', price: 600 },
@@ -54,8 +38,9 @@ const INITIAL_DATA = {
   ]
 };
 
+// === 2. 系統設定 ===
 const GOOGLE_SHEET_API_URL = ""; 
-const LIFF_ID = "2010360336-i18Jsouu"; 
+const LIFF_ID = "2010360336-i18Jsouu"; // 請在此填入您的 LIFF ID
 const SHIPPING_FEE = { '711': 60, 'home': 100 };
 
 export default function TeaStoreApp() {
@@ -66,8 +51,14 @@ export default function TeaStoreApp() {
   const [selectedCat, setSelectedCat] = useState(null);
   const [selectedProduct, setSelectedProduct] = useState(null);
   const [tempOptions, setTempOptions] = useState({ roastObj: null, quantity: 1 });
+  
+  // 訂單資訊狀態
+  const [customerName, setCustomerName] = useState('');
+  const [customerPhone, setCustomerPhone] = useState('');
   const [shippingMethod, setShippingMethod] = useState('711');
+  const [shippingAddress, setShippingAddress] = useState(''); // 門市名稱或宅配地址
   const [orderNote, setOrderNote] = useState('');
+  const [formError, setFormError] = useState(''); // 表單驗證錯誤訊息
 
   useEffect(() => {
     const initLiff = async () => {
@@ -86,7 +77,6 @@ export default function TeaStoreApp() {
     const productsInCat = appData.products.filter(p => p.catId === cat.id);
     setSelectedCat(cat);
     
-    // 智慧判斷：如果該分類只有一個商品，直接彈出購買選項
     if (productsInCat.length === 1) {
       handleProductClick(productsInCat[0]);
     } else {
@@ -115,6 +105,7 @@ export default function TeaStoreApp() {
     setTempOptions({ roastObj: null, quantity: 1 });
     setSelectedProduct(null);
     setSelectedCat(null); 
+    setFormError(''); // 重置錯誤訊息
   };
 
   const removeFromCart = (cartId) => {
@@ -128,37 +119,148 @@ export default function TeaStoreApp() {
   const submitOrder = async () => {
     if (cart.length === 0) return;
 
+    // 表單防呆驗證
+    if (!customerName.trim() || !customerPhone.trim() || !shippingAddress.trim()) {
+      setFormError('請確實填寫「姓名」、「電話」與「運送地址/門市」喔！');
+      return;
+    }
+    setFormError(''); // 清除錯誤
+
+    const shippingText = shippingMethod === '711' ? '7-11 店到店' : '宅配到府';
+    const noteText = orderNote.trim() ? `\n📝 備註: ${orderNote}` : '';
+    
+    // === 1. 純文字版本 (給未開啟 LIFF 時的備用方案) ===
     const orderText = cart.map(item => {
       const unit = item.catId === 'teabag' ? '組' : '斤';
       return `・${item.name} (${item.roast}) x ${item.quantity}${unit} = $${item.totalPrice}`;
     }).join('\n');
     
-    const shippingText = shippingMethod === '711' ? '7-11 店到店' : '宅配到府';
-    const noteText = orderNote.trim() ? `\n📝 備註: ${orderNote}` : '';
-    const message = `🍵 [好茶時光 - 新訂單]\n\n${orderText}\n\n📍 商品總計: $${itemsTotal}\n🚚 運費 (${shippingText}): $${currentShippingFee}${noteText}\n💰 總結帳金額: $${cartTotal}`;
+    const textMessage = `🍵 [好茶時光 - 新訂單]\n\n👤 姓名: ${customerName}\n📱 電話: ${customerPhone}\n🚚 運送 (${shippingText}): ${shippingAddress}\n\n${orderText}\n\n📍 商品總計: $${itemsTotal}\n📦 運費: $${currentShippingFee}${noteText}\n💰 總結帳金額: $${cartTotal}`;
 
+    // === 2. 漂亮圖卡版本 (LINE Flex Message 收據樣式) ===
+    const cartFlexContents = cart.map(item => {
+      const unit = item.catId === 'teabag' ? '組' : '斤';
+      return {
+        type: "box", layout: "horizontal", margin: "md",
+        contents: [
+          { type: "text", text: `${item.name}\n(${item.roast}) x ${item.quantity}${unit}`, size: "sm", color: "#555555", wrap: true, flex: 3 },
+          { type: "text", text: `$${item.totalPrice}`, size: "sm", color: "#111111", align: "end", flex: 1, weight: "bold" }
+        ]
+      };
+    });
+
+    const flexMessage = {
+      type: "bubble",
+      size: "mega",
+      body: {
+        type: "box", layout: "vertical", paddingAll: "0px",
+        contents: [
+          // 頂部綠色橫幅
+          { type: "box", layout: "vertical", backgroundColor: "#537A5F", paddingAll: "xl", contents: [
+            { type: "text", text: "NEW ORDER", color: "#C1E3CE", weight: "bold", size: "sm" },
+            { type: "text", text: "好茶時光 訂單明細", color: "#ffffff", weight: "bold", size: "xl", margin: "md" }
+          ]},
+          // 內容區塊
+          { type: "box", layout: "vertical", paddingAll: "xl", contents: [
+            { type: "text", text: new Date().toLocaleString('zh-TW'), size: "xs", color: "#aaaaaa" },
+            { type: "separator", margin: "xl", color: "#e0e0e0" },
+            
+            // 顧客資訊區塊 (新增)
+            { type: "box", layout: "vertical", margin: "xl", spacing: "sm", contents: [
+              { type: "text", text: "訂購人資訊", size: "sm", color: "#537A5F", weight: "bold", margin: "sm" },
+              { type: "box", layout: "horizontal", contents: [
+                { type: "text", text: "姓名", size: "sm", color: "#888888", flex: 1 },
+                { type: "text", text: customerName, size: "sm", color: "#333333", flex: 3, wrap: true }
+              ]},
+              { type: "box", layout: "horizontal", contents: [
+                { type: "text", text: "電話", size: "sm", color: "#888888", flex: 1 },
+                { type: "text", text: customerPhone, size: "sm", color: "#333333", flex: 3, wrap: true }
+              ]},
+              { type: "box", layout: "horizontal", contents: [
+                { type: "text", text: shippingMethod === '711' ? "門市" : "地址", size: "sm", color: "#888888", flex: 1 },
+                { type: "text", text: shippingAddress, size: "sm", color: "#333333", flex: 3, wrap: true }
+              ]}
+            ]},
+            
+            { type: "separator", margin: "xl", color: "#e0e0e0", style: "dashed" },
+            
+            // 商品列表
+            { type: "text", text: "購買明細", size: "sm", color: "#537A5F", weight: "bold", margin: "xl" },
+            { type: "box", layout: "vertical", margin: "md", contents: cartFlexContents },
+            { type: "separator", margin: "xl", color: "#e0e0e0" },
+            
+            // 小計與運費
+            { type: "box", layout: "vertical", margin: "xl", spacing: "sm", contents: [
+              { type: "box", layout: "horizontal", contents: [
+                { type: "text", text: "商品總計", size: "sm", color: "#555555" },
+                { type: "text", text: `$${itemsTotal}`, size: "sm", color: "#111111", align: "end" }
+              ]},
+              { type: "box", layout: "horizontal", contents: [
+                { type: "text", text: `運費 (${shippingText})`, size: "sm", color: "#555555" },
+                { type: "text", text: `$${currentShippingFee}`, size: "sm", color: "#111111", align: "end" }
+              ]}
+            ]},
+            
+            // 備註 (如果有填寫才顯示)
+            ...(orderNote.trim() ? [
+              { type: "box", layout: "horizontal", margin: "md", contents: [
+                { type: "text", text: "備註", size: "sm", color: "#537A5F", weight: "bold", flex: 1 },
+                { type: "text", text: orderNote, size: "sm", color: "#555555", wrap: true, flex: 3 }
+              ]}
+            ] : []),
+            
+            { type: "separator", margin: "xl", color: "#e0e0e0", style: "dashed" },
+            
+            // 總計
+            { type: "box", layout: "horizontal", margin: "xl", contents: [
+              { type: "text", text: "總結帳金額", size: "md", color: "#111111", weight: "bold" },
+              { type: "text", text: `$${cartTotal}`, size: "xl", color: "#537A5F", weight: "bold", align: "end" }
+            ]}
+          ]}
+        ]
+      }
+    };
+
+    // === 3. 傳送資料到 Google Sheet ===
     if (GOOGLE_SHEET_API_URL) {
       try {
         await fetch(GOOGLE_SHEET_API_URL, {
           method: 'POST',
-          body: JSON.stringify({ action: 'new_order', cart, shippingMethod, note: orderNote, total: cartTotal })
+          body: JSON.stringify({ 
+            action: 'new_order', 
+            customerName,
+            customerPhone,
+            shippingMethod,
+            shippingAddress,
+            note: orderNote,
+            cart, 
+            total: cartTotal 
+          })
         });
       } catch (e) {
         console.error("儲存至資料庫失敗", e);
       }
     }
 
+    // === 4. 判斷環境並送出訊息 ===
     if (window.liff && window.liff.isLoggedIn()) {
-      await window.liff.sendMessages([{ type: 'text', text: message }]);
-      window.liff.closeWindow();
+      try {
+        await window.liff.sendMessages([{ 
+          type: 'flex', 
+          altText: `收到新訂單 (${customerName})：總計 $${cartTotal}`, 
+          contents: flexMessage 
+        }]);
+        window.liff.closeWindow(); 
+      } catch (error) {
+        console.error("Flex Message 傳送失敗", error);
+      }
     } else {
-      const lineUrl = `https://line.me/R/oaMessage/@YOUR_LINE_ID?text=${encodeURIComponent(message)}`;
+      const lineUrl = `https://line.me/R/oaMessage/@YOUR_LINE_ID?text=${encodeURIComponent(textMessage)}`;
       window.location.href = lineUrl;
     }
   };
 
   return (
-    // 外層加入響應式背景，內層最大寬度放大到 max-w-2xl (平板) / max-w-4xl (電腦)
     <div className="min-h-screen bg-[#EAEFEA] flex justify-center selection:bg-[#8EBB9F] selection:text-white font-sans">
       <div className="w-full md:max-w-2xl lg:max-w-4xl bg-[#F9FCF9] text-[#3B5E46] relative shadow-[0_0_50px_-15px_rgba(0,0,0,0.1)] flex flex-col min-h-screen pb-28">
         
@@ -166,7 +268,6 @@ export default function TeaStoreApp() {
           <div className="absolute -top-10 -right-10 w-40 h-40 bg-[#6C9A7C] rounded-full opacity-50"></div>
           <div className="absolute top-10 -left-10 w-32 h-32 bg-[#43634D] rounded-full opacity-50"></div>
           
-          {/* Logo 如果您有準備圖片，可以換成 <img src="/logo.png" className="w-full h-full object-cover rounded-full" /> */}
           <div className="relative z-10 w-24 h-24 bg-white/10 backdrop-blur-md rounded-full mb-4 flex items-center justify-center border border-white/20 shadow-inner overflow-hidden">
             <ImageIcon className="text-white/70" size={32} />
           </div>
@@ -179,6 +280,7 @@ export default function TeaStoreApp() {
 
         <main className="flex-1 px-5 md:px-10 mt-8 relative z-20">
           
+          {}
           {view === 'home' && (
             <div className="space-y-6">
               <div className="flex justify-between items-center px-2">
@@ -191,7 +293,6 @@ export default function TeaStoreApp() {
                 </button>
               </div>
               
-              {/* 商品列表改為 RWD：手機 2排，平板 3排，電腦 4排 */}
               <div className="grid grid-cols-2 md:grid-cols-3 lg:grid-cols-4 gap-4 md:gap-6">
                 {appData.categories.map(cat => (
                   <div 
@@ -200,7 +301,6 @@ export default function TeaStoreApp() {
                     className="bg-white rounded-[2rem] overflow-hidden shadow-sm hover:shadow-md transition-all cursor-pointer border border-emerald-50 group flex flex-col"
                   >
                     <div className="aspect-[4/3] w-full overflow-hidden bg-[#E2E8E4]">
-                      {/* 當圖片載入失敗時，使用預設的佔位背景色 */}
                       <img 
                         src={cat.image} 
                         alt={cat.name} 
@@ -218,6 +318,7 @@ export default function TeaStoreApp() {
             </div>
           )}
 
+          {}
           {view === 'detail' && selectedCat && (
             <div className="space-y-6 animate-fade-in md:max-w-3xl md:mx-auto">
               <button 
@@ -268,7 +369,6 @@ export default function TeaStoreApp() {
             </div>
           )}
 
-          {}
           {view === 'cart' && (
             <div className="space-y-6 animate-fade-in md:max-w-2xl md:mx-auto">
               <div className="flex items-center gap-4 px-2">
@@ -313,43 +413,117 @@ export default function TeaStoreApp() {
                     </div>
                   ))}
                   
+                  {/* 新增：訂購人資訊區塊 */}
                   <div className="mt-8 p-6 bg-white rounded-[2rem] shadow-sm border border-emerald-50">
+                    <div className="mb-5 flex items-center gap-2">
+                      <UserCircle size={20} className="text-[#537A5F]" />
+                      <div>
+                        <h3 className="font-bold text-[#537A5F] text-lg leading-tight">訂購人資訊 (必填)</h3>
+                        <div className="text-[10px] text-[#8EBB9F] uppercase tracking-wider">Customer Info</div>
+                      </div>
+                    </div>
+                    
+                    <div className="space-y-4">
+                      <div>
+                        <label className="block text-sm font-bold text-[#537A5F] mb-1.5">真實姓名</label>
+                        <input 
+                          type="text" 
+                          value={customerName}
+                          onChange={(e) => setCustomerName(e.target.value)}
+                          placeholder="例如：王小明"
+                          className="w-full bg-gray-50 border border-gray-200 rounded-xl p-3.5 text-sm text-[#537A5F] focus:outline-none focus:ring-2 focus:ring-[#8EBB9F] transition-all"
+                        />
+                      </div>
+                      <div>
+                        <label className="block text-sm font-bold text-[#537A5F] mb-1.5">聯絡電話</label>
+                        <div className="relative">
+                          <Phone size={16} className="absolute left-4 top-1/2 -translate-y-1/2 text-gray-400" />
+                          <input 
+                            type="tel" 
+                            value={customerPhone}
+                            onChange={(e) => setCustomerPhone(e.target.value)}
+                            placeholder="例如：0912345678"
+                            className="w-full bg-gray-50 border border-gray-200 rounded-xl p-3.5 pl-10 text-sm text-[#537A5F] focus:outline-none focus:ring-2 focus:ring-[#8EBB9F] transition-all"
+                          />
+                        </div>
+                      </div>
+                    </div>
+                  </div>
+
+                  {/* 運送方式與地址區塊 */}
+                  <div className="mt-4 p-6 bg-white rounded-[2rem] shadow-sm border border-emerald-50">
                     <div className="mb-5">
-                      <h3 className="font-bold text-[#537A5F] text-lg leading-tight">選擇運送方式</h3>
+                      <h3 className="font-bold text-[#537A5F] text-lg leading-tight">選擇運送方式 (必填)</h3>
                       <div className="text-[10px] text-[#8EBB9F] uppercase tracking-wider">Shipping Method</div>
                     </div>
                     
-                    <div className="flex flex-col gap-4 md:flex-row">
-                      <label className={`flex-1 flex items-center justify-between p-4 border-2 rounded-2xl cursor-pointer transition-all ${shippingMethod === '711' ? 'border-[#537A5F] bg-emerald-50/30 shadow-sm' : 'border-gray-100 hover:border-gray-200'}`}>
-                        <div className="flex items-center gap-3">
-                          <div className={`p-3 rounded-xl ${shippingMethod === '711' ? 'bg-[#537A5F] text-white' : 'bg-gray-100 text-gray-400'}`}>
-                            <Store size={20} />
+                    <div className="flex flex-col gap-4">
+                      <label className={`flex flex-col p-4 border-2 rounded-2xl cursor-pointer transition-all ${shippingMethod === '711' ? 'border-[#537A5F] bg-emerald-50/30 shadow-sm' : 'border-gray-100 hover:border-gray-200'}`}>
+                        <div className="flex items-center justify-between w-full">
+                          <div className="flex items-center gap-3">
+                            <div className={`p-3 rounded-xl ${shippingMethod === '711' ? 'bg-[#537A5F] text-white' : 'bg-gray-100 text-gray-400'}`}>
+                              <Store size={20} />
+                            </div>
+                            <div>
+                              <div className={`font-bold text-sm ${shippingMethod === '711' ? 'text-[#537A5F]' : 'text-gray-600'}`}>7-11 店到店</div>
+                              <div className="text-[10px] text-gray-400 uppercase">Store Pickup</div>
+                            </div>
                           </div>
-                          <div>
-                            <div className={`font-bold text-sm ${shippingMethod === '711' ? 'text-[#537A5F]' : 'text-gray-600'}`}>7-11 店到店</div>
-                            <div className="text-[10px] text-gray-400 uppercase">Store Pickup</div>
+                          <div className="flex items-center gap-3">
+                            <span className="font-bold text-[#8EBB9F] text-sm">+$ {SHIPPING_FEE['711']}</span>
+                            <input type="radio" name="shipping" value="711" checked={shippingMethod === '711'} onChange={() => {setShippingMethod('711'); setShippingAddress('');}} className="w-5 h-5 accent-[#537A5F]"/>
                           </div>
                         </div>
-                        <div className="flex items-center gap-3">
-                          <span className="font-bold text-[#8EBB9F] text-sm">+$ {SHIPPING_FEE['711']}</span>
-                          <input type="radio" name="shipping" value="711" checked={shippingMethod === '711'} onChange={() => setShippingMethod('711')} className="w-5 h-5 accent-[#537A5F]"/>
-                        </div>
+                        {/* 7-11 門市輸入框 */}
+                        {shippingMethod === '711' && (
+                          <div className="mt-4 pt-4 border-t border-emerald-100/50 animate-slide-up">
+                            <label className="block text-xs font-bold text-[#537A5F] mb-1.5">收件門市名稱或店號</label>
+                            <div className="relative">
+                              <MapPin size={16} className="absolute left-3 top-1/2 -translate-y-1/2 text-emerald-400" />
+                              <input 
+                                type="text" 
+                                value={shippingAddress}
+                                onChange={(e) => setShippingAddress(e.target.value)}
+                                placeholder="例如：7-11 圓山門市"
+                                className="w-full bg-white border border-emerald-200 rounded-lg p-3 pl-9 text-sm text-[#537A5F] focus:outline-none focus:ring-2 focus:ring-[#8EBB9F]"
+                              />
+                            </div>
+                          </div>
+                        )}
                       </label>
 
-                      <label className={`flex-1 flex items-center justify-between p-4 border-2 rounded-2xl cursor-pointer transition-all ${shippingMethod === 'home' ? 'border-[#537A5F] bg-emerald-50/30 shadow-sm' : 'border-gray-100 hover:border-gray-200'}`}>
-                        <div className="flex items-center gap-3">
-                          <div className={`p-3 rounded-xl ${shippingMethod === 'home' ? 'bg-[#537A5F] text-white' : 'bg-gray-100 text-gray-400'}`}>
-                            <Truck size={20} />
+                      <label className={`flex flex-col p-4 border-2 rounded-2xl cursor-pointer transition-all ${shippingMethod === 'home' ? 'border-[#537A5F] bg-emerald-50/30 shadow-sm' : 'border-gray-100 hover:border-gray-200'}`}>
+                        <div className="flex items-center justify-between w-full">
+                          <div className="flex items-center gap-3">
+                            <div className={`p-3 rounded-xl ${shippingMethod === 'home' ? 'bg-[#537A5F] text-white' : 'bg-gray-100 text-gray-400'}`}>
+                              <Truck size={20} />
+                            </div>
+                            <div>
+                              <div className={`font-bold text-sm ${shippingMethod === 'home' ? 'text-[#537A5F]' : 'text-gray-600'}`}>宅配到府</div>
+                              <div className="text-[10px] text-gray-400 uppercase">Home Delivery</div>
+                            </div>
                           </div>
-                          <div>
-                            <div className={`font-bold text-sm ${shippingMethod === 'home' ? 'text-[#537A5F]' : 'text-gray-600'}`}>宅配到府</div>
-                            <div className="text-[10px] text-gray-400 uppercase">Home Delivery</div>
+                          <div className="flex items-center gap-3">
+                            <span className="font-bold text-[#8EBB9F] text-sm">+$ {SHIPPING_FEE['home']}</span>
+                            <input type="radio" name="shipping" value="home" checked={shippingMethod === 'home'} onChange={() => {setShippingMethod('home'); setShippingAddress('');}} className="w-5 h-5 accent-[#537A5F]"/>
                           </div>
                         </div>
-                        <div className="flex items-center gap-3">
-                          <span className="font-bold text-[#8EBB9F] text-sm">+$ {SHIPPING_FEE['home']}</span>
-                          <input type="radio" name="shipping" value="home" checked={shippingMethod === 'home'} onChange={() => setShippingMethod('home')} className="w-5 h-5 accent-[#537A5F]"/>
-                        </div>
+                        {/* 宅配地址輸入框 */}
+                        {shippingMethod === 'home' && (
+                          <div className="mt-4 pt-4 border-t border-emerald-100/50 animate-slide-up">
+                            <label className="block text-xs font-bold text-[#537A5F] mb-1.5">完整收件地址</label>
+                            <div className="relative">
+                              <MapPin size={16} className="absolute left-3 top-1/2 -translate-y-1/2 text-emerald-400" />
+                              <input 
+                                type="text" 
+                                value={shippingAddress}
+                                onChange={(e) => setShippingAddress(e.target.value)}
+                                placeholder="例如：台北市信義區信義路五段7號"
+                                className="w-full bg-white border border-emerald-200 rounded-lg p-3 pl-9 text-sm text-[#537A5F] focus:outline-none focus:ring-2 focus:ring-[#8EBB9F]"
+                              />
+                            </div>
+                          </div>
+                        )}
                       </label>
                     </div>
                   </div>
@@ -370,6 +544,7 @@ export default function TeaStoreApp() {
                     />
                   </div>
 
+                  {/* 結帳按鈕區塊 */}
                   <div className="mt-8 p-8 bg-[#537A5F] text-white rounded-[2rem] shadow-xl relative overflow-hidden">
                     <div className="absolute top-0 right-0 w-48 h-48 bg-[#6C9A7C] rounded-full opacity-20 -mr-12 -mt-12"></div>
                     
@@ -396,14 +571,21 @@ export default function TeaStoreApp() {
                       <span className="font-bold text-4xl text-emerald-200">$ {cartTotal}</span>
                     </div>
                     
+                    {/* 防呆錯誤提示 */}
+                    {formError && (
+                      <div className="bg-red-500/20 border border-red-400 text-red-100 text-xs font-bold p-3 rounded-xl mb-4 relative z-10 text-center animate-bounce">
+                        ⚠️ {formError}
+                      </div>
+                    )}
+
                     <button 
                       onClick={submitOrder}
                       className="w-full bg-white text-[#537A5F] py-4 rounded-2xl font-bold flex flex-col items-center justify-center shadow-lg hover:bg-gray-100 transition relative z-10 text-lg"
                     >
                       <div className="flex items-center gap-2">
-                        <Send size={20}/> <span>傳送訂單至 LINE</span>
+                        <Send size={20}/> <span>確認送出訂單</span>
                       </div>
-                      <span className="text-[10px] font-normal text-gray-500 uppercase mt-0.5">Send Order via LINE</span>
+                      <span className="text-[10px] font-normal text-gray-500 uppercase mt-0.5">Send Order</span>
                     </button>
 
                     <button 
