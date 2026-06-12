@@ -39,7 +39,7 @@ const INITIAL_DATA = {
 };
 
 // === 2. 系統設定 ===
-const GOOGLE_SHEET_API_URL = ""; 
+const GOOGLE_SHEET_API_URL = "https://script.google.com/macros/s/AKfycbzJmuBcwu8rrU_WrDNrqBUQwpnCH4O_qy-Z1ZzyTRtPrl4VrvOLOcrFSK6BJWzshMod/exec"; 
 const LIFF_ID = "2010360336-i18Jsouu"; // 您的 LIFF ID
 // ⚠️ 重要：請務必將下方的 ID 換成您自己的官方帳號 ID（一定要包含 @）
 const LINE_OA_ID = "@930nydzu"; 
@@ -289,7 +289,13 @@ export default function TeaStoreApp() {
           <div className="absolute top-10 -left-10 w-32 h-32 bg-[#43634D] rounded-full opacity-50"></div>
           
           <div className="relative z-10 w-24 h-24 bg-white/10 backdrop-blur-md rounded-full mb-4 flex items-center justify-center border border-white/20 shadow-inner overflow-hidden">
-            <ImageIcon className="text-white/70" size={32} />
+            <img 
+              src="/logo.png" 
+              alt="好茶時光" 
+              className="w-full h-full object-cover z-20 relative"
+              onError={(e) => { e.target.style.display = 'none'; }} 
+            />
+            <ImageIcon className="text-white/70 absolute z-10" size={32} />
           </div>
 
           <div className="relative z-10">
@@ -493,7 +499,7 @@ export default function TeaStoreApp() {
                 <div className="bg-[#537A5F] text-white p-2 rounded-full"><Truck size={18} /></div>
                 <div className="flex-1">
                   {itemsTotal >= FREE_SHIPPING_THRESHOLD ? (
-                    <div className="font-bold text-[#537A5F]">🎉 太棒了！本單已享免運費</div>
+                    <div className="font-bold text-[#537A5F]">🎉本單已享免運費</div>
                   ) : (
                     <>
                       <div className="font-bold text-[#537A5F] text-sm">滿 $2000 即享免運費</div>
