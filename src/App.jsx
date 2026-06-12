@@ -1,7 +1,6 @@
 import { useState, useEffect, useMemo } from 'react';
 import { ShoppingBag, Home, User, Plus, Minus, Trash2, Send, ArrowLeft, Search, ImageIcon, Store, Truck, Edit3, UserCircle, Phone, MapPin, X, Clock, RefreshCw } from 'lucide-react';
 
-// === 1. 商品資料區 ===
 const DEFAULT_IMG = '/tea-placeholder.jpg'; 
 const TEA_BAG_IMG = '/teabag.jpg';
 
@@ -38,13 +37,11 @@ const INITIAL_DATA = {
   ]
 };
 
-// === 2. 系統設定 ===
 const GOOGLE_SHEET_API_URL = "https://script.google.com/macros/s/AKfycbzJmuBcwu8rrU_WrDNrqBUQwpnCH4O_qy-Z1ZzyTRtPrl4VrvOLOcrFSK6BJWzshMod/exec"; 
-const LIFF_ID = "2010360336-i18Jsouu"; // 您的 LIFF ID
-// ⚠️ 重要：請務必將下方的 ID 換成您自己的官方帳號 ID（一定要包含 @）
+const LIFF_ID = "2010360336-i18Jsouu"; 
 const LINE_OA_ID = "@930nydzu"; 
 const SHIPPING_FEE = { '711': 60, 'home': 100 };
-const FREE_SHIPPING_THRESHOLD = 2000; // 滿額免運門檻
+const FREE_SHIPPING_THRESHOLD = 2000;
 
 export default function TeaStoreApp() {
   const [appData] = useState(INITIAL_DATA);
@@ -55,13 +52,11 @@ export default function TeaStoreApp() {
   const [selectedProduct, setSelectedProduct] = useState(null);
   const [tempOptions, setTempOptions] = useState({ roastObj: null, quantity: 1 });
   
-  // 附加功能狀態
   const [isLargeFont, setIsLargeFont] = useState(false);
   const [isSearching, setIsSearching] = useState(false);
   const [searchQuery, setSearchQuery] = useState('');
   const [orderHistory, setOrderHistory] = useState([]);
 
-  // 訂單資訊狀態
   const [customerName, setCustomerName] = useState('');
   const [customerPhone, setCustomerPhone] = useState('');
   const [shippingMethod, setShippingMethod] = useState('711');
@@ -69,14 +64,12 @@ export default function TeaStoreApp() {
   const [orderNote, setOrderNote] = useState('');
   const [formError, setFormError] = useState('');
 
-  // 初始化：載入字體大小與歷史訂單
   useEffect(() => {
     const history = JSON.parse(localStorage.getItem('teaOrderHistory') || '[]');
     setOrderHistory(history);
   }, []);
 
   useEffect(() => {
-    // 透過改變根節點的字體大小，自動縮放 Tailwind 的 rem 單位
     document.documentElement.style.fontSize = isLargeFont ? '18px' : '16px';
   }, [isLargeFont]);
 
@@ -105,7 +98,6 @@ export default function TeaStoreApp() {
 
   const handleProductClick = (product) => {
     setSelectedProduct(product);
-    // 判斷是否為茶包，茶包最小單位是 1，茶葉最小單位是 0.5 (半斤)
     const initialQty = product.catId === 'teabag' ? 1 : 0.5;
     setTempOptions({ roastObj: product.roastOptions[0], quantity: initialQty });
   };
@@ -132,9 +124,7 @@ export default function TeaStoreApp() {
     setCart(cart.filter(item => item.cartId !== cartId));
   };
 
-  // 再次購買歷史訂單
   const reorder = (pastOrderItems) => {
-    // 重新賦予新的 cartId 避免衝突
     const itemsWithNewId = pastOrderItems.map(item => ({...item, cartId: Date.now() + Math.random()}));
     setCart([...cart, ...itemsWithNewId]);
     setView('cart');
@@ -142,7 +132,6 @@ export default function TeaStoreApp() {
 
   const itemsTotal = useMemo(() => cart.reduce((sum, item) => sum + item.totalPrice, 0), [cart]);
   
-  // 免運費邏輯計算
   const currentShippingFee = itemsTotal >= FREE_SHIPPING_THRESHOLD 
     ? 0 
     : (cart.length > 0 ? SHIPPING_FEE[shippingMethod] : 0);
@@ -161,14 +150,13 @@ export default function TeaStoreApp() {
     const shippingText = shippingMethod === '711' ? '7-11 店到店' : '宅配到府';
     const noteText = orderNote.trim() ? `\n📝 備註: ${orderNote}` : '';
     
-    // === 1. 純文字版本 ===
     const orderText = cart.map(item => {
       const unit = item.catId === 'teabag' ? '組' : '斤';
       return `・${item.name} (${item.roast}) x ${String(item.quantity)}${unit} = $${String(item.totalPrice)}`;
     }).join('\n');
+    
     const textMessage = `🍵 [崧發茶園好茶時光 - 新訂單]\n\n👤 姓名: ${customerName}\n📱 電話: ${customerPhone}\n🚚 運送 (${shippingText}): ${shippingAddress}\n\n${orderText}\n\n📍 商品總計: $${String(itemsTotal)}\n📦 運費: $${String(currentShippingFee)}${noteText}\n💰 總結帳金額: $${String(cartTotal)}`;
 
-    // === 2. 安全的 Flex Message 結構 ===
     const flexMessage = {
       type: "bubble",
       body: {
@@ -232,19 +220,17 @@ export default function TeaStoreApp() {
       } catch (e) { console.error("儲存失敗", e); }
     }
 
-    // === 儲存至歷史訂單 (LocalStorage) ===
     const newOrderRecord = {
       id: Date.now(),
       date: new Date().toLocaleString('zh-TW', { year: 'numeric', month: '2-digit', day: '2-digit', hour: '2-digit', minute: '2-digit' }),
       items: cart,
-      total: cartTotal,
-      status: '已送出'
+      total: cartTotal
     };
+    
     const updatedHistory = [newOrderRecord, ...orderHistory];
     setOrderHistory(updatedHistory);
     localStorage.setItem('teaOrderHistory', JSON.stringify(updatedHistory));
 
-    // === 3. 傳送訊息邏輯 ===
     if (window.liff && window.liff.isLoggedIn()) {
       try {
         await window.liff.sendMessages([{ type: 'flex', altText: `收到新訂單 (${customerName})：總計 $${String(cartTotal)}`, contents: flexMessage }]);
@@ -262,7 +248,6 @@ export default function TeaStoreApp() {
     }
   };
 
-  // 篩選搜尋結果
   const searchResults = searchQuery.trim() === '' 
     ? [] 
     : appData.products.filter(p => 
@@ -275,9 +260,7 @@ export default function TeaStoreApp() {
     <div className="min-h-screen bg-[#EAEFEA] flex justify-center selection:bg-[#8EBB9F] selection:text-white font-sans transition-all duration-300">
       <div className="w-full md:max-w-2xl lg:max-w-4xl bg-[#F9FCF9] text-[#3B5E46] relative shadow-[0_0_50px_-15px_rgba(0,0,0,0.1)] flex flex-col min-h-screen pb-28">
         
-        {/* 頂部 Header */}
         <header className="bg-[#537A5F] text-white pt-16 pb-12 px-6 md:rounded-b-[3.5rem] rounded-b-[2.5rem] relative shadow-lg overflow-hidden flex flex-col items-center justify-center text-center">
-          {/* 字體放大按鈕 */}
           <button 
             onClick={() => setIsLargeFont(!isLargeFont)}
             className="absolute top-6 right-6 z-20 bg-white/20 hover:bg-white/30 backdrop-blur-md px-3 py-1.5 rounded-full text-sm font-bold flex items-center gap-1 transition-colors border border-white/30"
@@ -306,7 +289,7 @@ export default function TeaStoreApp() {
 
         <main className="flex-1 px-5 md:px-10 mt-8 relative z-20">
           
-          {/* 首頁 (包含搜尋與分類) */}
+          {}
           {view === 'home' && (
             <div className="space-y-6">
               <div className="flex justify-between items-center px-2">
@@ -322,7 +305,6 @@ export default function TeaStoreApp() {
                 </button>
               </div>
 
-              {/* 搜尋框 */}
               {isSearching && (
                 <div className="px-2 animate-slide-up">
                   <div className="relative">
@@ -339,7 +321,6 @@ export default function TeaStoreApp() {
                 </div>
               )}
               
-              {/* 搜尋結果列表 */}
               {isSearching && searchQuery.trim() !== '' ? (
                 <div className="space-y-4">
                   {searchResults.length === 0 ? (
@@ -366,7 +347,6 @@ export default function TeaStoreApp() {
                   )}
                 </div>
               ) : !isSearching && (
-                /* 原始分類列表 */
                 <div className="grid grid-cols-2 md:grid-cols-3 lg:grid-cols-4 gap-4 md:gap-6 animate-fade-in">
                   {appData.categories.map(cat => (
                     <div 
@@ -388,7 +368,6 @@ export default function TeaStoreApp() {
             </div>
           )}
 
-          {/* 分類詳情頁 */}
           {view === 'detail' && selectedCat && (
             <div className="space-y-6 animate-fade-in md:max-w-3xl md:mx-auto">
               <button onClick={() => setView('home')} className="flex items-center gap-2 bg-white px-5 py-2.5 rounded-full shadow-sm text-sm font-bold border border-emerald-100 text-[#537A5F] hover:bg-emerald-50 transition-colors w-max">
@@ -430,7 +409,6 @@ export default function TeaStoreApp() {
             </div>
           )}
 
-          {/* 會員歷史紀錄頁面 */}
           {view === 'profile' && (
             <div className="space-y-6 animate-fade-in md:max-w-2xl md:mx-auto">
               <div className="flex items-center gap-4 px-2 mb-6">
@@ -455,7 +433,6 @@ export default function TeaStoreApp() {
                     <div key={order.id} className="bg-white rounded-[2rem] p-5 shadow-sm border border-emerald-50">
                       <div className="flex justify-between items-center border-b border-gray-100 pb-3 mb-3">
                         <div className="text-sm text-gray-500 flex items-center gap-1.5"><Clock size={14}/> {order.date}</div>
-                        <span className="text-xs font-bold text-[#537A5F] bg-emerald-50 px-2 py-1 rounded-md">{order.status}</span>
                       </div>
                       <div className="space-y-2 mb-4">
                         {order.items.map((item, idx) => (
@@ -481,7 +458,6 @@ export default function TeaStoreApp() {
             </div>
           )}
 
-          {/* 購物車頁面 */}
           {view === 'cart' && (
             <div className="space-y-6 animate-fade-in md:max-w-2xl md:mx-auto">
               <div className="flex items-center gap-4 px-2">
@@ -494,7 +470,6 @@ export default function TeaStoreApp() {
                 </div>
               </div>
 
-              {/* 免運進度條提示 */}
               <div className="bg-gradient-to-r from-emerald-50 to-white p-4 rounded-2xl border border-emerald-100 flex items-center gap-3 shadow-sm">
                 <div className="bg-[#537A5F] text-white p-2 rounded-full"><Truck size={18} /></div>
                 <div className="flex-1">
@@ -536,7 +511,6 @@ export default function TeaStoreApp() {
                     </div>
                   ))}
 
-                  {/* 繼續購物按鈕 (往上移) */}
                   <button 
                     onClick={() => setView('home')} 
                     className="w-full py-4 border-2 border-dashed border-[#8EBB9F] text-[#537A5F] rounded-2xl font-bold flex items-center justify-center gap-2 hover:bg-emerald-50 transition-colors"
@@ -544,7 +518,6 @@ export default function TeaStoreApp() {
                     <Plus size={20} /> 繼續選購其他茶款
                   </button>
                   
-                  {/* 訂購人資訊 */}
                   <div className="mt-8 p-6 bg-white rounded-[2rem] shadow-sm border border-emerald-50">
                     <div className="mb-5 flex items-center gap-2">
                       <UserCircle size={20} className="text-[#537A5F]" />
@@ -567,7 +540,6 @@ export default function TeaStoreApp() {
                     </div>
                   </div>
 
-                  {/* 運送方式 */}
                   <div className="mt-4 p-6 bg-white rounded-[2rem] shadow-sm border border-emerald-50">
                     <div className="mb-5">
                       <h3 className="font-bold text-[#537A5F] text-lg leading-tight">選擇運送方式 (必填)</h3>
@@ -627,7 +599,6 @@ export default function TeaStoreApp() {
                     </div>
                   </div>
 
-                  {/* 備註 */}
                   <div className="mt-4 p-6 bg-white rounded-[2rem] shadow-sm border border-emerald-50">
                     <div className="mb-4 flex items-center gap-2">
                       <Edit3 size={20} className="text-[#537A5F]" />
@@ -636,7 +607,6 @@ export default function TeaStoreApp() {
                     <textarea value={orderNote} onChange={(e) => setOrderNote(e.target.value)} placeholder="有什麼想告訴我們的嗎？(例如：希望的出貨時間等)" className="w-full bg-gray-50 border border-gray-200 rounded-2xl p-4 text-sm text-[#537A5F] placeholder-gray-400 focus:outline-none focus:ring-2 focus:ring-[#8EBB9F] focus:bg-white transition-all resize-none h-28"/>
                   </div>
 
-                  {/* 結帳明細框 */}
                   <div className="mt-8 p-8 bg-[#537A5F] text-white rounded-[2rem] shadow-xl relative overflow-hidden">
                     <div className="absolute top-0 right-0 w-48 h-48 bg-[#6C9A7C] rounded-full opacity-20 -mr-12 -mt-12"></div>
                     <div className="space-y-4 mb-6 relative z-10 text-sm">
@@ -675,7 +645,6 @@ export default function TeaStoreApp() {
           )}
         </main>
 
-        {/* 購買選項小視窗 */}
         {selectedProduct && tempOptions.roastObj && (
           <div className="fixed inset-0 bg-black/60 z-50 flex items-center md:items-center justify-center backdrop-blur-sm p-4">
             <div className="bg-white w-full max-w-md rounded-[2.5rem] p-6 pb-8 shadow-2xl relative animate-slide-up">
@@ -758,7 +727,6 @@ export default function TeaStoreApp() {
           </div>
         )}
 
-        {/* 底部導覽列 (全中文) */}
         <nav className="fixed bottom-6 left-1/2 -translate-x-1/2 w-[90%] md:w-full md:max-w-md bg-[#537A5F] text-white py-3 px-8 rounded-full flex justify-between items-center shadow-[0_10px_40px_-10px_rgba(83,122,95,0.6)] z-40 border border-white/10">
           <button onClick={() => {setView('home'); setIsSearching(false);}} className={`p-2 transition-colors flex flex-col items-center gap-1.5 ${view === 'home' || view === 'detail' ? 'text-white' : 'text-[#8EBB9F]'}`}>
             <Home size={22} />
