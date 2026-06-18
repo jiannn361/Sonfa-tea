@@ -6,27 +6,27 @@ const TEA_BAG_IMG = '/teabag.jpg';
 
 const INITIAL_DATA = {
   categories: [
-    { id: 'jinxuan', name: '金萱茶', nameEn: 'Jin Xuan Tea', image: '/cat-jinxuan.png' },
-    { id: 'oolong', name: '烏龍茶', nameEn: 'Oolong Tea', image: '/cat-oolong.png' },
-    { id: 'gaba', name: 'GABA茶', nameEn: 'GABA Tea', image: '/cat-gaba.png' },
-    { id: 'black', name: '小葉種紅茶', nameEn: 'Black Tea', image: '/cat-black.png' },
-    { id: 'green', name: '綠茶', nameEn: 'Green Tea', image: '/cat-green.png' },
-    { id: 'white', name: '白茶', nameEn: 'White Tea', image: '/cat-white.png' },
-    { id: 'jasmine', name: '茉莉花茶', nameEn: 'Jasmine Tea', image: '/cat-jasmine.png' },
-    { id: 'teabag', name: '茶包組', nameEn: 'Tea Bags', image: '/cat-teabag.png' },
+    { id: 'jinxuan', name: '金萱茶', nameEn: 'Jin Xuan Tea', image: '/cat-jinxuan.jpg' },
+    { id: 'oolong', name: '烏龍茶', nameEn: 'Oolong Tea', image: '/cat-oolong.jpg' },
+    { id: 'gaba', name: 'GABA茶', nameEn: 'GABA Tea', image: '/cat-gaba.jpg' },
+    { id: 'black', name: '小葉種紅茶', nameEn: 'Black Tea', image: '/cat-black.jpg' },
+    { id: 'green', name: '綠茶', nameEn: 'Green Tea', image: '/cat-green.jpg' },
+    { id: 'white', name: '白茶', nameEn: 'White Tea', image: '/cat-white.jpg' },
+    { id: 'jasmine', name: '茉莉花茶', nameEn: 'Jasmine Tea', image: '/cat-jasmine.jpg' },
+    { id: 'teabag', name: '茶包組', nameEn: 'Tea Bags', image: '/cat-teabag.jpg' },
   ],
   products: [
-    { id: 101, catId: 'jinxuan', name: '阿里山金萱茶', nameEn: 'Alishan Jin Xuan', desc: '帶有淡雅奶香與桂花香。', image: '/prod-jinxuan.png', roastOptions: [{ level: '輕焙', levelEn: 'Light', price: 1200 }, { level: '中焙', levelEn: 'Medium', price: 1300 }] },
-    { id: 201, catId: 'oolong', name: '高山烏龍', nameEn: 'High Mountain Oolong', desc: '喉韻甘甜，回甘持久。', image: '/prod-oolong1.png', roastOptions: [{ level: '輕焙', levelEn: 'Light', price: 1500 }, { level: '中焙', levelEn: 'Medium', price: 1600 }] },
-    { id: 202, catId: 'oolong', name: '紅烏龍', nameEn: 'Red Oolong', desc: '熟果香氣，滋味醇厚。', image: '/prod-oolong2.png', roastOptions: [{ level: '中重焙', levelEn: 'Medium-Heavy', price: 1600 }] },
-    { id: 203, catId: 'oolong', name: '紅水烏龍', nameEn: 'Red Water Oolong', desc: '傳統發酵，水色琥珀。', image: '/prod-oolong3.png', roastOptions: [{ level: '重發酵', levelEn: 'Heavy Fermentation', price: 1800 }] },
-    { id: 204, catId: 'oolong', name: '白烏龍', nameEn: 'White Oolong', desc: '清香淡雅，如花香撲鼻。', image: '/prod-oolong4.png', roastOptions: [{ level: '輕發酵', levelEn: 'Light Fermentation', price: 1500 }] },
-    { id: 301, catId: 'gaba', name: '佳葉龍茶 (GABA)', nameEn: 'GABA Tea', desc: '富含γ-胺基丁酸，舒緩身心。', image: '/prod-gaba.png', roastOptions: [{ level: '標準', levelEn: 'Standard', price: 2000 }] },
-    { id: 401, catId: 'black', name: '金芽紅茶', nameEn: 'Golden Bud Black Tea', desc: '毫香顯露，滋味甜潤。', image: '/prod-black1.png', roastOptions: [{ level: '全發酵', levelEn: 'Fully Fermented', price: 1800 }] },
-    { id: 402, catId: 'black', name: '蜜香紅茶', nameEn: 'Honey Black Tea', desc: '天然蜜香，小綠葉蟬叮咬。', image: '/prod-black2.png', roastOptions: [{ level: '全發酵', levelEn: 'Fully Fermented', price: 2200 }] },
-    { id: 501, catId: 'green', name: '精選綠茶', nameEn: 'Premium Green Tea', desc: '保留豐富兒茶素，清爽解膩。', image: '/prod-green.png', roastOptions: [{ level: '不發酵', levelEn: 'Unfermented', price: 1000 }] },
-    { id: 601, catId: 'white', name: '精選白茶', nameEn: 'Premium White Tea', desc: '毫香清鮮，自然萎凋。', image: '/prod-white.png', roastOptions: [{ level: '微發酵', levelEn: 'Slightly Fermented', price: 1600 }] },
-    { id: 701, catId: 'jasmine', name: '頂級茉莉花茶', nameEn: 'Jasmine Green Tea', desc: '新鮮茉莉花層層窨製。', image: '/prod-jasmine.png', roastOptions: [{ level: '不發酵', levelEn: 'Unfermented', price: 1500 }] },
+    { id: 101, catId: 'jinxuan', name: '阿里山金萱茶', nameEn: 'Alishan Jin Xuan', desc: '帶有淡雅奶香與桂花香。', image: '/prod-jinxuan.jpg', roastOptions: [{ level: '輕焙', levelEn: 'Light', price: 1200 }, { level: '中焙', levelEn: 'Medium', price: 1300 }] },
+    { id: 201, catId: 'oolong', name: '高山烏龍', nameEn: 'High Mountain Oolong', desc: '喉韻甘甜，回甘持久。', image: '/prod-oolong1.jpg', roastOptions: [{ level: '輕焙', levelEn: 'Light', price: 1500 }, { level: '中焙', levelEn: 'Medium', price: 1600 }] },
+    { id: 202, catId: 'oolong', name: '紅烏龍', nameEn: 'Red Oolong', desc: '熟果香氣，滋味醇厚。', image: '/prod-oolong2.jpg', roastOptions: [{ level: '中重焙', levelEn: 'Medium-Heavy', price: 1600 }] },
+    { id: 203, catId: 'oolong', name: '紅水烏龍', nameEn: 'Red Water Oolong', desc: '傳統發酵，水色琥珀。', image: '/prod-oolong3.jpg', roastOptions: [{ level: '重發酵', levelEn: 'Heavy Fermentation', price: 1800 }] },
+    { id: 204, catId: 'oolong', name: '白烏龍', nameEn: 'White Oolong', desc: '清香淡雅，如花香撲鼻。', image: '/prod-oolong4.jpg', roastOptions: [{ level: '輕發酵', levelEn: 'Light Fermentation', price: 1500 }] },
+    { id: 301, catId: 'gaba', name: '佳葉龍茶 (GABA)', nameEn: 'GABA Tea', desc: '富含γ-胺基丁酸，舒緩身心。', image: '/prod-gaba.jpg', roastOptions: [{ level: '標準', levelEn: 'Standard', price: 2000 }] },
+    { id: 401, catId: 'black', name: '金芽紅茶', nameEn: 'Golden Bud Black Tea', desc: '毫香顯露，滋味甜潤。', image: '/prod-black1.jpg', roastOptions: [{ level: '全發酵', levelEn: 'Fully Fermented', price: 1800 }] },
+    { id: 402, catId: 'black', name: '蜜香紅茶', nameEn: 'Honey Black Tea', desc: '天然蜜香，小綠葉蟬叮咬。', image: '/prod-black2.jpg', roastOptions: [{ level: '全發酵', levelEn: 'Fully Fermented', price: 2200 }] },
+    { id: 501, catId: 'green', name: '精選綠茶', nameEn: 'Premium Green Tea', desc: '保留豐富兒茶素，清爽解膩。', image: '/prod-green.jpg', roastOptions: [{ level: '不發酵', levelEn: 'Unfermented', price: 1000 }] },
+    { id: 601, catId: 'white', name: '精選白茶', nameEn: 'Premium White Tea', desc: '毫香清鮮，自然萎凋。', image: '/prod-white.jpg', roastOptions: [{ level: '微發酵', levelEn: 'Slightly Fermented', price: 1600 }] },
+    { id: 701, catId: 'jasmine', name: '頂級茉莉花茶', nameEn: 'Jasmine Green Tea', desc: '新鮮茉莉花層層窨製。', image: '/prod-jasmine.jpg', roastOptions: [{ level: '不發酵', levelEn: 'Unfermented', price: 1500 }] },
     { id: 801, catId: 'teabag', name: '原片茶包組 (50包/組)', nameEn: 'Tea Bag Set (50pcs)', desc: '方便沖泡，隨時享受好茶。', image: TEA_BAG_IMG, roastOptions: [
       { level: '紅茶', levelEn: 'Black Tea', price: 600 },
       { level: '烏龍茶', levelEn: 'Oolong Tea', price: 600 },
@@ -289,22 +289,23 @@ export default function TeaStoreApp() {
 
         <main className="flex-1 px-5 md:px-10 mt-8 relative z-20">
           
-          {}
+          {/* 首頁 (包含搜尋與分類) */}
           {view === 'home' && (
             <div className="space-y-6">
-              <div className="flex justify-between items-center px-2">
-                <div>
+              <div className="relative flex justify-center items-center px-2 mb-2">
+                <div className="text-center">
                   <h2 className="text-2xl font-extrabold text-[#537A5F]">{isSearching ? '尋找茶款' : '精選茶款'}</h2>
                   <span className="text-xs text-[#8EBB9F] uppercase tracking-wider font-semibold">{isSearching ? 'Search' : 'Featured Teas'}</span>
                 </div>
                 <button 
                   onClick={() => { setIsSearching(!isSearching); setSearchQuery(''); }}
-                  className={`p-2.5 rounded-full transition-colors ${isSearching ? 'bg-[#537A5F] text-white shadow-md' : 'bg-emerald-50 text-[#537A5F] hover:bg-emerald-100'}`}
+                  className={`absolute right-0 p-2.5 rounded-full transition-colors ${isSearching ? 'bg-[#537A5F] text-white shadow-md' : 'bg-emerald-50 text-[#537A5F] hover:bg-emerald-100'}`}
                 >
                   {isSearching ? <X size={20} /> : <Search size={20} />}
                 </button>
               </div>
 
+              {/* 搜尋框 */}
               {isSearching && (
                 <div className="px-2 animate-slide-up">
                   <div className="relative">
@@ -321,6 +322,7 @@ export default function TeaStoreApp() {
                 </div>
               )}
               
+              {/* 搜尋結果列表 (移除圖片，改為純文字置中) */}
               {isSearching && searchQuery.trim() !== '' ? (
                 <div className="space-y-4">
                   {searchResults.length === 0 ? (
@@ -332,21 +334,19 @@ export default function TeaStoreApp() {
                       <div 
                         key={product.id} 
                         onClick={() => handleProductClick(product)}
-                        className="relative flex items-center bg-[#537A5F] rounded-[2rem] p-4 pr-6 shadow-md cursor-pointer hover:bg-[#43634D] transition-colors group"
+                        className="bg-[#537A5F] rounded-[2rem] p-5 shadow-md cursor-pointer hover:bg-[#43634D] transition-colors text-center"
                       >
-                        <div className="w-24 h-24 bg-[#E2E8E4] rounded-2xl p-1 shadow-inner shrink-0 overflow-hidden">
-                          <img src={product.image} className="w-full h-full object-cover rounded-xl" alt={product.name} onError={(e) => { e.target.onerror = null; e.target.src = DEFAULT_IMG; }}/>
-                        </div>
-                        <div className="ml-4 flex-1 text-white">
-                          <h3 className="font-bold text-lg leading-tight mb-1">{product.name}</h3>
-                          <p className="text-xs text-[#C1E3CE] line-clamp-1 opacity-80">{product.desc}</p>
-                          <div className="font-bold text-emerald-200 mt-2">$ {minPrice} 起</div>
+                        <div className="text-white">
+                          <h3 className="font-bold text-xl leading-tight mb-1">{product.name}</h3>
+                          <p className="text-xs text-[#C1E3CE] mb-3 opacity-80">{product.desc}</p>
+                          <div className="font-bold text-emerald-200 inline-block bg-white/10 px-4 py-1.5 rounded-xl text-sm">$ {minPrice} 起</div>
                         </div>
                       </div>
                     )})
                   )}
                 </div>
               ) : !isSearching && (
+                /* 原始分類大項列表 (保留分類的圖片) */
                 <div className="grid grid-cols-2 md:grid-cols-3 lg:grid-cols-4 gap-4 md:gap-6 animate-fade-in">
                   {appData.categories.map(cat => (
                     <div 
@@ -368,37 +368,33 @@ export default function TeaStoreApp() {
             </div>
           )}
 
+          {/* 分類詳情頁 (單純品項，移除照片位子) */}
           {view === 'detail' && selectedCat && (
             <div className="space-y-6 animate-fade-in md:max-w-3xl md:mx-auto">
-              <button onClick={() => setView('home')} className="flex items-center gap-2 bg-white px-5 py-2.5 rounded-full shadow-sm text-sm font-bold border border-emerald-100 text-[#537A5F] hover:bg-emerald-50 transition-colors w-max">
-                <ArrowLeft size={16} /> 
-                <div className="flex flex-col text-left leading-tight">
-                  <span>返回</span><span className="text-[9px] text-[#8EBB9F] font-normal uppercase">Back</span>
+              <div className="relative flex justify-center items-center px-2 border-b border-gray-100 pb-5 mb-2">
+                <button onClick={() => setView('home')} className="absolute left-0 flex items-center justify-center bg-white w-10 h-10 rounded-full shadow-sm border border-emerald-100 text-[#537A5F] hover:bg-emerald-50 transition-colors">
+                  <ArrowLeft size={20} /> 
+                </button>
+                <div className="text-center">
+                  <h2 className="text-3xl font-extrabold text-[#537A5F]">{selectedCat.name}</h2>
+                  <span className="text-sm text-[#8EBB9F] uppercase tracking-wider font-semibold block mt-1">{selectedCat.nameEn}</span>
                 </div>
-              </button>
-              
-              <div className="px-2 border-b border-gray-100 pb-4">
-                <h2 className="text-3xl font-extrabold text-[#537A5F]">{selectedCat.name}</h2>
-                <span className="text-sm text-[#8EBB9F] uppercase tracking-wider font-semibold">{selectedCat.nameEn}</span>
               </div>
 
-              <div className="space-y-5 md:grid md:grid-cols-2 md:gap-6 md:space-y-0">
+              <div className="space-y-4 md:grid md:grid-cols-2 md:gap-6 md:space-y-0">
                 {appData.products.filter(p => p.catId === selectedCat.id).map(product => {
                   const minPrice = Math.min(...product.roastOptions.map(r => r.price));
                   return (
                   <div 
                     key={product.id} 
                     onClick={() => handleProductClick(product)}
-                    className="relative flex items-center bg-[#537A5F] rounded-[2rem] p-4 pr-6 shadow-xl cursor-pointer hover:bg-[#43634D] transition-colors group"
+                    className="bg-[#537A5F] rounded-[2rem] p-6 shadow-xl cursor-pointer hover:bg-[#43634D] transition-colors text-center group"
                   >
-                    <div className="w-28 h-32 md:w-32 md:h-36 -ml-8 bg-[#E2E8E4] rounded-2xl p-1 shadow-lg shrink-0 group-hover:scale-105 transition-transform duration-300">
-                      <img src={product.image} className="w-full h-full object-cover rounded-xl" alt={product.name} onError={(e) => { e.target.onerror = null; e.target.src = DEFAULT_IMG; }}/>
-                    </div>
-                    <div className="ml-4 flex-1 text-white">
-                      <h3 className="font-bold text-lg leading-tight mb-1">{product.name}</h3>
-                      <div className="text-[10px] text-[#C1E3CE] mb-2 font-light uppercase tracking-wider line-clamp-1">{product.nameEn}</div>
-                      <p className="text-xs text-[#C1E3CE] mb-3 line-clamp-2 opacity-80 leading-relaxed">{product.desc}</p>
-                      <div className="font-bold tracking-wider text-emerald-200">
+                    <div className="text-white">
+                      <h3 className="font-bold text-xl leading-tight mb-1">{product.name}</h3>
+                      <div className="text-[10px] text-[#C1E3CE] mb-3 font-light uppercase tracking-wider">{product.nameEn}</div>
+                      <p className="text-sm text-[#C1E3CE] mb-5 opacity-90 leading-relaxed">{product.desc}</p>
+                      <div className="font-bold tracking-wider text-emerald-200 bg-white/10 py-2.5 px-5 rounded-xl inline-block">
                         <span className="text-sm font-normal mr-1">$</span>{minPrice} 
                         <span className="text-[10px] font-normal text-[#C1E3CE] ml-1">起 / {product.catId === 'teabag' ? '組' : '斤'}</span>
                       </div>
@@ -409,15 +405,16 @@ export default function TeaStoreApp() {
             </div>
           )}
 
+          {/* 會員歷史紀錄頁面 */}
           {view === 'profile' && (
             <div className="space-y-6 animate-fade-in md:max-w-2xl md:mx-auto">
-              <div className="flex items-center gap-4 px-2 mb-6">
-                <div className="bg-[#537A5F] p-3 rounded-full text-white shadow-md">
-                  <User size={24} />
+              <div className="flex flex-col items-center gap-2 px-2 mb-8 text-center">
+                <div className="bg-[#537A5F] p-3.5 rounded-full text-white shadow-md">
+                  <User size={28} />
                 </div>
                 <div>
-                  <h2 className="text-2xl font-bold text-[#537A5F] leading-tight">會員紀錄</h2>
-                  <div className="text-[10px] text-[#8EBB9F] uppercase tracking-wider font-semibold">Order History</div>
+                  <h2 className="text-2xl font-extrabold text-[#537A5F] leading-tight">會員紀錄</h2>
+                  <div className="text-[10px] text-[#8EBB9F] uppercase tracking-wider font-semibold mt-1">Order History</div>
                 </div>
               </div>
 
@@ -458,23 +455,25 @@ export default function TeaStoreApp() {
             </div>
           )}
 
+          {/* 購物車頁面 */}
           {view === 'cart' && (
             <div className="space-y-6 animate-fade-in md:max-w-2xl md:mx-auto">
-              <div className="flex items-center gap-4 px-2">
-                <button onClick={() => setView('home')} className="bg-white p-2.5 rounded-full shadow-sm text-[#537A5F] hover:bg-emerald-50">
+              <div className="relative flex justify-center items-center px-2 mb-4">
+                <button onClick={() => setView('home')} className="absolute left-0 bg-white w-10 h-10 flex items-center justify-center rounded-full shadow-sm text-[#537A5F] hover:bg-emerald-50 border border-emerald-100">
                   <ArrowLeft size={20}/>
                 </button>
-                <div>
-                  <h2 className="text-2xl font-bold text-[#537A5F] leading-tight">購物車</h2>
-                  <div className="text-[10px] text-[#8EBB9F] uppercase tracking-wider font-semibold">Shopping Cart</div>
+                <div className="text-center">
+                  <h2 className="text-2xl font-extrabold text-[#537A5F] leading-tight">購物車</h2>
+                  <div className="text-[10px] text-[#8EBB9F] uppercase tracking-wider font-semibold mt-1">Shopping Cart</div>
                 </div>
               </div>
 
+              {/* 免運進度條提示 */}
               <div className="bg-gradient-to-r from-emerald-50 to-white p-4 rounded-2xl border border-emerald-100 flex items-center gap-3 shadow-sm">
                 <div className="bg-[#537A5F] text-white p-2 rounded-full"><Truck size={18} /></div>
                 <div className="flex-1">
                   {itemsTotal >= FREE_SHIPPING_THRESHOLD ? (
-                    <div className="font-bold text-[#537A5F]">🎉本單已享免運費</div>
+                    <div className="font-bold text-[#537A5F]">🎉 太棒了！本單已享免運費</div>
                   ) : (
                     <>
                       <div className="font-bold text-[#537A5F] text-sm">滿 $2000 即享免運費</div>
@@ -495,22 +494,26 @@ export default function TeaStoreApp() {
               ) : (
                 <div className="space-y-5">
                   {cart.map(item => (
-                    <div key={item.cartId} className="bg-white p-4 rounded-[2rem] shadow-sm flex items-center gap-4 border border-emerald-50 hover:shadow-md transition-shadow">
-                      <img src={item.image} className="w-20 h-20 rounded-2xl object-cover" alt="" onError={(e) => { e.target.onerror = null; e.target.src = DEFAULT_IMG; }}/>
-                      <div className="flex-1">
-                        <h3 className="font-bold text-[#537A5F] text-lg leading-tight">{item.name}</h3>
-                        <div className="text-[9px] text-gray-400 uppercase mb-2">{item.nameEn}</div>
-                        <p className="text-xs text-[#8EBB9F] font-medium bg-emerald-50 inline-block px-2.5 py-1 rounded-lg">
+                    <div key={item.cartId} className="bg-white p-5 rounded-[2rem] shadow-sm flex flex-col gap-3 border border-emerald-50 hover:shadow-md transition-shadow">
+                      <div className="flex justify-between items-start">
+                        <div>
+                          <h3 className="font-bold text-[#537A5F] text-lg leading-tight">{item.name}</h3>
+                          <div className="text-[9px] text-gray-400 uppercase mb-2 mt-1">{item.nameEn}</div>
+                        </div>
+                        <button onClick={() => removeFromCart(item.cartId)} className="text-red-400 hover:text-red-600 bg-red-50 hover:bg-red-100 p-2.5 rounded-xl transition-colors shrink-0">
+                          <Trash2 size={18}/>
+                        </button>
+                      </div>
+                      <div className="flex justify-between items-end border-t border-gray-50 pt-3 mt-1">
+                        <p className="text-xs text-[#8EBB9F] font-medium bg-emerald-50 inline-block px-3 py-1.5 rounded-lg">
                           {item.roast} · {item.quantity} {item.catId === 'teabag' ? '組' : `斤 ${item.quantity === 0.5 ? '(半斤)' : ''}`}
                         </p>
-                        <div className="font-bold text-[#537A5F] mt-1.5 text-lg">$ {item.totalPrice}</div>
+                        <div className="font-bold text-[#537A5F] text-xl">$ {item.totalPrice}</div>
                       </div>
-                      <button onClick={() => removeFromCart(item.cartId)} className="text-red-400 hover:text-red-600 bg-red-50 hover:bg-red-100 p-3 rounded-2xl transition-colors">
-                        <Trash2 size={20}/>
-                      </button>
                     </div>
                   ))}
 
+                  {/* 繼續購物按鈕 */}
                   <button 
                     onClick={() => setView('home')} 
                     className="w-full py-4 border-2 border-dashed border-[#8EBB9F] text-[#537A5F] rounded-2xl font-bold flex items-center justify-center gap-2 hover:bg-emerald-50 transition-colors"
